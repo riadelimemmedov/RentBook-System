@@ -18,6 +18,7 @@ from ckeditor.fields import RichTextField
 
 #*Author
 class Author(TimeStampedModel):
+    """Book Author Class,Manager only in django admin"""
     author_id = RandomCharField(_('Id'),length = 15, unique=True,include_alpha=False)
     author_name = models.CharField(_('Name'),max_length=50,db_index=True,unique=True)
     author_surname = models.CharField(_('Surname'),max_length=50)
