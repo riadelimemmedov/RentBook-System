@@ -24,9 +24,12 @@ admin.site.register(BookTitle,BookTitleModelAdmin)
 
 #*BookModelAdmin
 class BookModelAdmin(admin.ModelAdmin):
-    list_display = ['title','book_id','qr_code','created','modified']
+    list_display = ['title','book_isbn','qr_code','created','modified']
     list_display_links = ['title','qr_code']
     
     
 #register created custokm model to django admin site
 admin.site.register(Book,BookModelAdmin)
+
+
+admin.site.register(CategoryBook)
