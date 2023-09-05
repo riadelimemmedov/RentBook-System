@@ -13,7 +13,7 @@ from .models import *
 
 #* PublisherModelAdmin
 class PublisherModelAdmin(admin.ModelAdmin):
-    list_display = ['id','publisher_name','publisher_country','created','modified']
+    list_display = ['id','publisher_name','publisher_country','created','modified','publisher_id']
     list_display_links = ['id','publisher_name','publisher_country']
     
     

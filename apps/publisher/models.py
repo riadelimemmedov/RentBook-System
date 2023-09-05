@@ -6,6 +6,7 @@ from django.utils.translation import gettext_lazy as _
 
 
 #! Third Party Packages
+from django_extensions.db.fields import AutoSlugField,RandomCharField
 from django_extensions.db.models import TimeStampedModel
 from django_countries.fields import CountryField
 
@@ -20,7 +21,7 @@ import uuid
 #*Publisher
 class Publisher(TimeStampedModel):
     """Book publisher Managed only in the django admin"""
-    id = models.UUIDField(_('Id'),primary_key=True,default=uuid.uuid4(),editable=False)
+    publisher_id = RandomCharField(_('Publisher Id'),length=20,unique=True,blank=True,include_alpha=True,null=True)
     publisher_name = models.CharField(_('Name'),max_length=200)
     publisher_country = CountryField(blank_label=('select country'))
     
