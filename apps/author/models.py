@@ -12,6 +12,9 @@ from django_extensions.db.models import TimeStampedModel
 from ckeditor.fields import RichTextField
 
 
+#!Helpers methods and functions
+from config.helpers import (setFullName)
+
 # Create your models here.
 
 
@@ -37,7 +40,7 @@ class Author(TimeStampedModel):
         
     
     def __str__(self):
-        return f"{self.author_name}-{self.author_surname}-{self.author_slug}"
+        return f"{self.author_name}-{self.author_surname}"
     
     
     def checkAuthorEmailIsExist(self):
@@ -52,7 +55,7 @@ class Author(TimeStampedModel):
     
     
     def save(self,*args,**kwargs):
-        fullName = self.setAuthorFullName()
+        self.author_fullname = setFullName(self.author_name,self.author_surname)
         isEmailExists = self.checkAuthorEmailIsExist()
         super(Author,self).save(*args,**kwargs)
     
