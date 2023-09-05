@@ -47,7 +47,11 @@ if settings.APP_NAME == AppName.ADMIN.name:
     ]
 else:
     urlpatterns += [
-        path("author/",include('apps.author.urls',namespace='author')),                                          
+        path("author/",include('apps.author.urls',namespace='author')),
+        path("book/",include('apps.book.urls',namespace='book')),                                       
+        path("customer/",include('apps.customer.urls',namespace='customer')),                                       
+        path("publisher/",include('apps.publisher.urls',namespace='publisher')),
+        path("rental/",include('apps.rental.urls',namespace='rental')),                                       
     ]
 urlpatterns += i18n_patterns(path("admin/", admin.site.urls))
 
