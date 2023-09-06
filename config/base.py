@@ -44,7 +44,7 @@ DEFAULT_APPS = [
 ]
 
 #!Third Part App
-THIRD_PARTY_APPS = ["django_cleanup","ckeditor","django_extensions",'django_countries']
+THIRD_PARTY_APPS = ["django_cleanup","ckeditor","django_extensions",'django_countries','import_export']
 
 #!Created Apps
 CREATED_APPS = [
