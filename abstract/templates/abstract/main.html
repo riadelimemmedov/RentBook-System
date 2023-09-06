@@ -1,0 +1,23 @@
+{% load static %}
+
+
+
+<!-- !Css -->
+{% block css %} {% endblock css %}
+
+
+<!-- !Title -->
+<title>RentBook | {% block title %}  {% endblock title %}</title>
+
+
+<div>
+    <!-- !Content -->
+    {% block content %}
+        Hello {{books}}
+    {% endblock content %}
+</div>
+
+
+<!-- !JavaScript -->
+{% block scripts %}
+{% endblock scripts %}
