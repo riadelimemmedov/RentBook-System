@@ -13,7 +13,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 #!App Name
-APP_NAME = "ADMIN"  # Default ADMIN,BOOK
+APP_NAME = "BOOK"  # Default ADMIN,BOOK
 
 #!SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = config("SECRET_KEY")
