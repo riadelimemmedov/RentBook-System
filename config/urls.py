@@ -26,6 +26,8 @@ from django.utils.translation import gettext_lazy as _
 #!Abstract
 from abstract.constants import AppName
 
+from abstract.views import *
+
 
 
 # *Admin Site Configuration
@@ -39,20 +41,24 @@ if not settings.APP_NAME or settings.APP_NAME not in [app.value for app in AppNa
     raise Exception(_("Please set app correct name same as abstract.constants.AppName"))
 
 
+urls_admin = [
+    path("jet/", include("jet.urls", "jet")),
+    path("jet/dashboard/", include("jet.dashboard.urls", "jet-dashboard")),
+    path("ckeditor/", include("ckeditor_uploader.urls")),  
+]
+
 if settings.APP_NAME == AppName.ADMIN.name:
-    urlpatterns += [
-        path("jet/", include("jet.urls", "jet")),
-        path("jet/dashboard/", include("jet.dashboard.urls", "jet-dashboard")),
-        path("ckeditor/", include("ckeditor_uploader.urls")),
-    ]
+    urlpatterns += urls_admin
 else:
     urlpatterns += [
+        path('',getHomeView,name='home'),
         path("author/",include('apps.author.urls',namespace='author')),
         path("book/",include('apps.book.urls',namespace='book')),                                       
         path("customer/",include('apps.customer.urls',namespace='customer')),                                       
         path("publisher/",include('apps.publisher.urls',namespace='publisher')),
-        path("rental/",include('apps.rental.urls',namespace='rental')),                                       
+        path("rental/",include('apps.rental.urls',namespace='rental')),       
     ]
+    urlpatterns += urls_admin
 urlpatterns += i18n_patterns(path("admin/", admin.site.urls))
 
 
