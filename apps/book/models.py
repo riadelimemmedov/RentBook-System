@@ -32,6 +32,7 @@ class CategoryBook(TimeStampedModel):
     class Meta:
         verbose_name = 'Category Book'
         verbose_name_plural = 'Categoryies Book'
+        
 
     def __str__(self):
         return f"{self.category_book_name}"
@@ -56,6 +57,9 @@ class BookTitle(TimeStampedModel):
         return f"Book position : {self.book_title}"
     
     
+    @property
+    def books(self):
+        return self.booktitle.all()
 
 #*Book
 class Book(TimeStampedModel):
@@ -119,7 +123,7 @@ class Book(TimeStampedModel):
         WELSH = 'cy',_('Welsh')
 
     
-    title = models.ForeignKey(BookTitle,verbose_name=(_('Book Title')),on_delete=models.CASCADE)
+    title = models.ForeignKey(BookTitle,verbose_name=(_('Book Title')),on_delete=models.CASCADE,related_name='booktitle')
     book_isbn = RandomCharField(_('Book Id'),length=13,unique=True,blank=True,include_alpha=True,null=True)
     qr_code = models.ImageField(_('Qr Code'),upload_to='qr_codes',blank=True,null=True,validators=[FileExtensionValidator(['png','jpg','jpeg'])])
     book_language = models.CharField(_('Language'),max_length=50,choices=LanguagesChoices.choices,null=True)
@@ -136,6 +140,7 @@ class Book(TimeStampedModel):
     class Meta:
         verbose_name = 'Book'
         verbose_name_plural = 'Books'
+        
         
     
     def __str__(self):
