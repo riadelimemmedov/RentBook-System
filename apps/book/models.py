@@ -15,6 +15,10 @@ import qrcode
 
 
 
+#!Models,Forms and Serializer classes
+from apps.rental.choices import *
+
+
 #!Python modules and function
 import uuid
 from io import BytesIO
@@ -140,12 +144,21 @@ class Book(TimeStampedModel):
     class Meta:
         verbose_name = 'Book'
         verbose_name_plural = 'Books'
-        
-        
     
     def __str__(self):
         return f"{self.title} - {self.book_language}"
     
+    
+    @property
+    def status(self):
+        if len(self.rental_set.all()) > 0:
+            print('All rentall ', self.rental_set.all())
+            print('All rentall status ', self.rental_set.all().first())
+            
+            statuses = dict(STATUS_CHOICES)
+            print('Statusess ', statuses)
+            return statuses[self.rental_set.all().first().rented_status]
+        return False
     
     def save(self,*args,**kwargs):
         #generate qr code 

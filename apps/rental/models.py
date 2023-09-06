@@ -39,7 +39,7 @@ class Rental(TimeStampedModel):
     class Meta:
         verbose_name = 'Rental Book'
         verbose_name_plural = 'Rental Books'
-        
+        ordering = ['-created']
         
     def __str__(self):
         return f"{self.rented_book.book_isbn} rented by {self.rented_customer.customer_username}"
@@ -49,3 +49,4 @@ class Rental(TimeStampedModel):
         if not self.rent_end_date:
             self.rent_end_date = self.rent_start_date + timedelta(days=14)
         super(Rental, self).save(*args,**kwargs)
+        

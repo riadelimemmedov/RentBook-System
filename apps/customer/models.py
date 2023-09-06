@@ -5,12 +5,9 @@ from django.utils.translation import gettext_lazy as _
 from django.utils.text import slugify
 
 
-
 #! Third Party Packages
 from django_extensions.db.fields import AutoSlugField,RandomCharField
 from django_extensions.db.models import TimeStampedModel
-
-
 
 
 #!Helpers methods and functions
