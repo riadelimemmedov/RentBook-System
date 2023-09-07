@@ -42,7 +42,6 @@ class CategoryBook(TimeStampedModel):
         return f"{self.category_book_name}"
     
     
-    
 
 
 #*BookTitle
@@ -152,12 +151,12 @@ class Book(TimeStampedModel):
     @property
     def status(self):
         if len(self.rental_set.all()) > 0:
-            print('All rentall ', self.rental_set.all())
-            print('All rentall status ', self.rental_set.all().first())
-            
             statuses = dict(STATUS_CHOICES)
-            print('Statusess ', statuses)
-            return statuses[self.rental_set.all().first().rented_status]
+            if len(self.rental_set.all()) > 1:
+                for rentalbook in self.rental_set.all():
+                    return rentalbook
+            else:
+                return statuses[self.rental_set.all().first().rented_status]
         return False
     
     def save(self,*args,**kwargs):
