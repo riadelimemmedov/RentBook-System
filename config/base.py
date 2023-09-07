@@ -44,10 +44,11 @@ DEFAULT_APPS = [
 ]
 
 #!Third Part App
-THIRD_PARTY_APPS = ["django_cleanup","ckeditor","django_extensions",'django_countries','import_export']
+THIRD_PARTY_APPS = ["django_cleanup","ckeditor","django_extensions",'django_countries','import_export','tailwind','django_browser_reload']
 
 #!Created Apps
 CREATED_APPS = [
+    'theme',
     'abstract',
     'apps.author',
     'apps.book',
@@ -60,8 +61,15 @@ CREATED_APPS = [
 INSTALLED_APPS = DEFAULT_APPS + CREATED_APPS + THIRD_PARTY_APPS
 
 
+TAILWIND_APP_NAME = 'theme'
+INTERNAL_IPS = [
+    "127.0.0.1",
+]
+NPM_BIN_PATH = config("NPM_BIN_PATH")
+
 #!Middleware
 MIDDLEWARE = [
+    "django_browser_reload.middleware.BrowserReloadMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
