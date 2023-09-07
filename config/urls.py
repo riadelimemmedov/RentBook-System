@@ -25,7 +25,6 @@ from django.utils.translation import gettext_lazy as _
 
 #!Abstract
 from abstract.constants import AppName
-
 from abstract.views import *
 
 
@@ -51,7 +50,9 @@ if settings.APP_NAME == AppName.ADMIN.name:
     urlpatterns += urls_admin
 else:
     urlpatterns += [
+        path("__reload__/", include("django_browser_reload.urls")),
         path('',getHomeView,name='home'),
+        path('change/',changeTheme,name='change'),
         path("author/",include('apps.author.urls',namespace='author')),
         path("book/",include('apps.book.urls',namespace='book')),                                       
         path("customer/",include('apps.customer.urls',namespace='customer')),                                       
