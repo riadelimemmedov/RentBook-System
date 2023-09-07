@@ -1,23 +1,27 @@
+{% load static tailwind_tags %}
 {% load static %}
-
 
 
 <!-- !Css -->
 {% block css %} {% endblock css %}
-
-
+    
 <!-- !Title -->
-<title>RentBook | {% block title %}  {% endblock title %}</title>
+<title>{% block title %} RentBook {% endblock title %}</title>
 
 
-<div>
-    <!-- !Content -->
-    {% block content %}
-        Hello {{books}}
-    {% endblock content %}
-</div>
+<!-- !Include Base Template -->
+{% include "base.html" %}
+
+
+<!-- *Child Component -->
+    <div id="main" class="mb-5">
+        {{request.session.is_dark_mode}}
+    </div>
+<!-- *Child Component -->
 
 
 <!-- !JavaScript -->
 {% block scripts %}
+    <script src="{% static 'abstract/main.js' %}"></script>
 {% endblock scripts %}
+
