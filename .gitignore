@@ -11,6 +11,13 @@ db.sqlite3
 db.sqlite3-journal
 media
 
+theme/static/admin
+theme/static/ckeditor
+theme/static/jet
+theme/static/jet.dashboard
+theme/static/range_filter
+
+
 static/admin
 static/ckeditor
 static/jet
