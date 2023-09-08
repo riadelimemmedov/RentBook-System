@@ -1,11 +1,12 @@
 {% load static tailwind_tags %}
 {% load static %}
 <!DOCTYPE html>
-<html lang="en" :class="{ 'dark': is_dark_mode }">
+<html lang="en">
 	<head>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<link rel="shortcut icon" href="{% static 'images/share.png' %}" type="image/x-icon" >
 
 
 		<!--! Font awesome -->
@@ -22,36 +23,30 @@
 
 
 	<!-- *Parent Component -->
-		<div id="base">
-				<body class="bg-gray-50 dark:bg-slate-800 dark:text-white">
-					{% include "layout/navbar.html" %}
-					<div class="grid grid-cols-12">
-						{% if request.user.is_authenticated %}
-							<div class="col-span-1">
-								{% include "layout/sidebar.html" %}
-							</div>
-						{% endif %}
+			<body class="bg-gray-50 dark:bg-slate-800 dark:text-white">
+				{% include "layout/navbar.html" %}
+				<div class="grid grid-cols-12">
+					{% if request.user.is_authenticated %}
+						<div class="col-span-1">
+							{% include "layout/sidebar.html" %}
+						</div>
+					{% endif %}
 
-						<div class="{% if request.user.is_authenticated %}col-span-11{% else %}col-span-12{% endif %}">
-							<div class="pt-20 px-6">
-								{% if request.user.is_authenticated %}
-									<a v-on:click="changeMode"
-										class="fixed top-[150px] right-0 p-3 rounded-l-lg bg-slate-200 hover:bg-slate-300 dark:bg-yellow-400 dark:hover:bg-yellow-500 text-slate-900 drop-shadow-md transition-all no-underline">
-										<i :class="{'fa-solid': true,'fa-moon': !is_dark_mode,'fa-sun': is_dark_mode,'fa-xl': true}"></i>
-									</a>					
-								{% endif %}
-								<!-- !Content -->
-
-
-								{% block content %}
-
-								
-								{% endblock content %}
-							</div>
+					<div class="{% if request.user.is_authenticated %}col-span-11{% else %}col-span-12{% endif %}">
+						<div class="pt-20 px-6">
+							{% if request.user.is_authenticated %}
+								<button id="change-mode"
+									class="fixed top-[150px] right-0 p-3 rounded-l-lg bg-slate-200 hover:bg-slate-300 dark:bg-yellow-400 dark:hover:bg-yellow-500 text-slate-900 drop-shadow-md transition-all no-underline">
+									<i class="fa-solid fa-moon fa-xl" id="change-mode-icon"></i>
+								</button>					
+							{% endif %}
+							<!-- !Content -->
+							{% block content %}
+							{% endblock content %}
 						</div>
 					</div>
-				</body>
-		</div>	
+				</div>
+			</body>
 	<!-- *Parent Component -->
 
 

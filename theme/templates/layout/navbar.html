@@ -1,7 +1,11 @@
+{% load static %}
+
 <nav class="fixed flex items-center h-16 bg-gradient-to-r from-cyan-500 to-blue-700 mb-2 w-full z-10 text-white">
-    <div class="flex justify-between w-full px-4 py-3">
+    <div class="flex justify-between items-center w-full px-4 py-3">
         <div>
-            Logo
+            <a href="{% url 'home' %}">
+                <img src="{% static 'images/logo.png' %}" class="h-12" alt="book rent-logo">
+            </a>
         </div>
         <div>
             Avatar & Menu
