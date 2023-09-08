@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% load static tailwind_tags %}
+{% load static %}
+
+
+<!-- !Css -->
+{% block css %} {% endblock css %}
+    
+<!-- !Title -->
+<title>{% block title %} Book {% endblock title %}</title>
+
+
+<!-- !Include Base Template -->
+
+
+<!-- *Child Component -->
+    {% block content %}
+        <div id="book">
+            Hello from book page
+            <button class="bg-green-500" @click="callHelloFromBook">Call Hellooooooo</button>
+            {{book_titles}}
+        </div>
+    {% endblock content %}
+<!-- *Child Component -->
+
+
+<!-- !JavaScript -->
+{% block scripts %}
+    <script src="{% static 'book/book.js' %}"></script>
+{% endblock scripts %}
+
