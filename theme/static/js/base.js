@@ -3,18 +3,34 @@ var base = new Vue({
     delimiters: ['[[', ']]'],
     data: {
         counter: 0,
-        input_text:null,
+        is_dark_mode:null,
+        reload_count:1
     },
     methods: {
-        changeMode(){
-            console.log('Noldu ala')
-            fetch('http://127.0.0.1:8000/change')
-                .then((response) => {
-                    console.log('Work and change ', response)
-                })
-                .catch((err) => {
-                    console.log('Error ', err)
-                })
+        async changeMode(){            
+            try{
+                const response = await fetch('http://127.0.0.1:8000/change/',{
+                    method:'POST',
+                        headers:{
+                            'Content-Type': 'application/json',
+                        },
+                        credentials: 'same-origin',
+                    })
+                    if (response.ok) {
+                        const data = await response.json();
+                        this.is_dark_mode = data.is_dark_mode;
+                        const htmlElement = document.documentElement;
+                        htmlElement.classList.contains('dark') ? htmlElement.classList.remove('dark') : htmlElement.classList.add('dark');
+                    } else {
+                        console.error('Failed to toggle dark mode');
+                    }
+            }
+            catch(err){
+                console.error('Error:', err);
+            }
         }
-    }
+    },
+    mounted() {
+
+      },
 })
