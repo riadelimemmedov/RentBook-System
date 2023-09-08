@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% load static tailwind_tags %}
+{% load static %}
+
+
+<!-- !Css -->
+{% block css %} {% endblock css %}
+    
+<!-- !Title -->
+<title>{% block title %} Dashboard {% endblock title %}</title>
+
+
+<!-- !Include Base Template -->
+
+
+<!-- *Child Component -->
+    {% block content %}
+        <div id="dashboard">
+            <button class="bg-blue-800" @click="callHelloDashboard">Dashboard hello</button>
+        </div>
+    {% endblock content %}
+<!-- *Child Component -->
+
+
+<!-- !JavaScript -->
+{% block scripts %}
+    <script src="{% static 'abstract/dashboard.js' %}"></script>
+{% endblock scripts %}
+
