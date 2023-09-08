@@ -51,7 +51,9 @@ if settings.APP_NAME == AppName.ADMIN.name:
 else:
     urlpatterns += [
         path("__reload__/", include("django_browser_reload.urls")),
-        path('',BookTitleListView.as_view(),name='home'),
+        path('',HomeView.as_view(),name='home'),
+        path('dashboard/', DashboardView.as_view(),name='dashboard'),
+        path('about/',AboutView.as_view(),name='about'),
         path('change/',changeTheme,name='change'),
         path("author/",include('apps.author.urls',namespace='author')),
         path("book/",include('apps.book.urls',namespace='book')),                                       
