@@ -17,15 +17,15 @@
     {% block content %}
         <div id="book">
 
-            <div id="alert_box">
-    
+            <div ref="alert_box">
+                
             </div>
 
 
             <form @submit.prevent="checkForm" id="book_form">
                 {% csrf_token %}
                 {{form.as_p}}
-                <button type="submit" class="p-3 bg-blue-500 text-white">Send</button>
+                <button type="submit" class="p-3 bg-blue-500 text-white" ref="create_book_btn">Send</button>
             </form>
             
 <!-- 
