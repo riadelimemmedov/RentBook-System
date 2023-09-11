@@ -16,9 +16,24 @@
 <!-- *Child Component -->
     {% block content %}
         <div id="book">
-            Hello from book page
-            <button class="bg-green-500" @click="callHelloFromBook">Call Hellooooooo</button>
-            {{book_titles}}
+
+            <div id="alert_box">
+    
+            </div>
+
+
+            <form @submit.prevent="checkForm" id="book_form">
+                {% csrf_token %}
+                {{form.as_p}}
+                <button type="submit" class="p-3 bg-blue-500 text-white">Send</button>
+            </form>
+            
+<!-- 
+            <form action="{% url 'book:books' %}" method="POST">
+                {% csrf_token %}
+                {{form.as_p}}
+                <button type="submit" class="p-3 bg-blue-500 text-white">Send</button>
+            </form> -->
         </div>
     {% endblock content %}
 <!-- *Child Component -->
