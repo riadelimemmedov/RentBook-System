@@ -6,7 +6,8 @@ var book = new Vue({
         is_complete:false,
         show:true,
         is_submit:true,
-        errors:null
+        errors:null,
+        errors_field:null,
     },
     methods: {
         checkForm(e){
@@ -35,12 +36,15 @@ var book = new Vue({
                         // self.$refs.alert_field_box.innerHTML = ''
                     },
                     success:function(response){
+                        let fields_error = self.getFieldsError(self.errors_field,false)
                         self.handleAlerts("Book title created succsessfully",'success')//This is notification,Show user book creating process complete or not.Now show field erros or etc
                     },
                     error: function(err){
-                        self.errors = err.responseJSON.form_errors ? err.responseJSON.form_errors : self.handleAlerts("Something went wrong please try again",'danger') //This is notification,Show user book creating process complete or not.Now show field erros or etc
+                        self.errors_field = err.responseJSON.form_errors
+                        let fields_error = self.getFieldsError(self.errors_field,true)
+                        self.errors = fields_error ? fields_error : self.handleAlerts("Something went wrong please try again",'danger') //This is notification,Show user book creating process complete or not.Now show field erros or etc
                         
-                        // self.hideAlertCart()
+                        // self.hideAlertCarts
                     },
                     cache: false,
                     contentType: false,
@@ -69,6 +73,31 @@ var book = new Vue({
                         </div>
                 `
         },
+
+
+        getFieldsError(fields,is_error){
+            let arr = fields
+            let error_field_arr = []
+            for (let i = 0; i < fields.length; i++) {
+                // Parse the current element into a JavaScript object
+                let obj = JSON.parse(arr[i].replace(/'/g, "\""));
+                error_field_arr.push(Object.values(obj))
+                if(is_error){
+                    document.getElementsByName(Object.keys(obj)[0])[0].classList.add('form-control')
+                    document.getElementsByName(Object.keys(obj)[0])[0].classList.add('is-invalid')
+                }
+                else{
+                    document.getElementsByName(Object.keys(obj)[0])[0].classList.remove('form-control')
+                    document.getElementsByName(Object.keys(obj)[0])[0].classList.remove('is-invalid')
+                }
+            }
+            return error_field_arr
+        },
+
+        extractText(error) {
+            return error[0]
+        },
+
         // hideAlertCart(){
         //         setTimeout(()=>{
         //             this.$refs.alert_box.innerHTML = ''

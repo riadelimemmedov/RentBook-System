@@ -1,5 +1,6 @@
 
 #! Django function and methods
+from typing import Any
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.http import HttpResponse, JsonResponse
@@ -17,7 +18,7 @@ from .forms import BookTitleForm
 
 
 #?BookTitleListView
-class BookListView(FormView):
+class BookListView(ListView,FormView):
     model = Book
     form_class = BookTitleForm
     template_name = "book/book.html"
@@ -34,6 +35,13 @@ class BookListView(FormView):
         return Book.objects.all().order_by('-created')
     
     
+    def get_context_data(self,**kwargs):
+        context = super(BookListView, self).get_context_data(**kwargs)
+        context['name'] = 'John'
+        context['form'] = self.get_form_class()
+        context['qs'] = self.get_queryset()
+        
+        return context
     
     @classmethod
     def is_ajax(cls, request):
@@ -61,5 +69,5 @@ class BookListView(FormView):
         error_messages = []
         for field_name, errors in form.errors.items():
             for error in errors:
-                error_messages.append(strip_tags(error))
+                error_messages.append(strip_tags({field_name:error}))
         return error_messages
