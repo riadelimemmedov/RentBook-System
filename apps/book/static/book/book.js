@@ -5,7 +5,8 @@ var book = new Vue({
         role:"alert",
         is_complete:false,
         show:true,
-        is_submit:true
+        is_submit:true,
+        errors:null
     },
     methods: {
         checkForm(e){
@@ -21,6 +22,7 @@ var book = new Vue({
             // const create_book_btn = self.$refs.create_book_btn
             // console.log('Create book btn is ', create_book_btn);
 
+
             if(fd){
                 $.ajax({
                     type:'POST',
@@ -29,13 +31,16 @@ var book = new Vue({
                     data:fd,
                     beforeSend : function(){
                         self.$refs.alert_box.innerHTML = ''
-                        
+                        self.errors = null
+                        // self.$refs.alert_field_box.innerHTML = ''
                     },
                     success:function(response){
-                        self.handleAlerts("Book title created succsessfully",'success')
+                        self.handleAlerts("Book title created succsessfully",'success')//This is notification,Show user book creating process complete or not.Now show field erros or etc
                     },
                     error: function(err){
-                        self.handleAlerts("Something went wrong please try again",'danger')
+                        self.errors = err.responseJSON.form_errors ? err.responseJSON.form_errors : self.handleAlerts("Something went wrong please try again",'danger') //This is notification,Show user book creating process complete or not.Now show field erros or etc
+                        
+                        // self.hideAlertCart()
                     },
                     cache: false,
                     contentType: false,
@@ -60,16 +65,15 @@ var book = new Vue({
             this.$refs.alert_box.innerHTML =  `
                         <div class="alert alert-${type} alert-dismissible fade show" role="alert">
                             <strong>${text}</strong> 
-                            <button type="button" class="btn-close fw-bold" data-bs-dismiss="alert" aria-label="Close">X</button>
+                            <button type="button" class="btn-close fw-bold" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
                 `
-                this.hideAlertCart()
         },
-        hideAlertCart(){
-                setTimeout(()=>{
-                    this.$refs.alert_box.innerHTML = ''
-                },3000)
-        },
+        // hideAlertCart(){
+        //         setTimeout(()=>{
+        //             this.$refs.alert_box.innerHTML = ''
+        //         },5000)
+        // },
 
         // checkFormFields(form_fields_value){
         //     let count = 0

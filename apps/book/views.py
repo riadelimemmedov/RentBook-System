@@ -2,8 +2,9 @@
 #! Django function and methods
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.http import JsonResponse
+from django.http import HttpResponse, JsonResponse
 from django.views.generic import ListView,FormView
+from django.utils.html import strip_tags
 
 
 #!Models,Forms and Serializer classes
@@ -41,8 +42,24 @@ class BookListView(FormView):
     
     def form_valid(self, form):
         instance = form.save(commit=False)
-        if self.is_ajax(self.request) and form.is_valid:
+        if self.is_ajax(self.request) and form.is_valid():
             instance.save()
-            return JsonResponse({'success': True})
+            return JsonResponse({'success': True},status=200)
+        else:
+            pass
+        return super(BookListView, self).form_valid(form)
+    
+    
+    def form_invalid(self,form):
+        form_errors = self.handleFormErrors(form)
+        if form_errors:        
+            return JsonResponse({'form_errors': form_errors},status=400)
         return super(BookListView, self).form_valid(form)
 
+    
+    def handleFormErrors(self,form):
+        error_messages = []
+        for field_name, errors in form.errors.items():
+            for error in errors:
+                error_messages.append(strip_tags(error))
+        return error_messages
