@@ -8,6 +8,8 @@ var book = new Vue({
         is_submit:true,
         errors:null,
         errors_field:null,
+        selected_letter:null,
+        book_titles:null
     },
     methods: {
         checkForm(e){
@@ -74,13 +76,21 @@ var book = new Vue({
                 `
         },
 
+        handleSwalNotifications(title,icon,confirmButtonText){
+            Swal.fire({
+                title: title,
+                icon: icon,
+                confirmButtonText: confirmButtonText
+            })
+        },
+
 
         getFieldsError(fields,is_error){
             let arr = fields
             let error_field_arr = []
             for (let i = 0; i < fields.length; i++) {
                 // Parse the current element into a JavaScript object
-                let obj = JSON.parse(arr[i].replace(/'/g, "\""));
+                let obj = JSON.parse(arr[i].replace(/'/g, "\""));//This raemain this format,because if we have call continuesly call parse function javascript heap return error.Maximum call stack
                 error_field_arr.push(Object.values(obj))
                 if(is_error){
                     document.getElementsByName(Object.keys(obj)[0])[0].classList.add('form-control')
@@ -97,6 +107,31 @@ var book = new Vue({
         extractText(error) {
             return error[0]
         },
+
+
+        searchBookTitle(letter){
+            const self = this
+            self.selected_letter = letter
+            $.ajax({
+                type:'GET',
+                url: `http://127.0.0.1:8000/book/${letter}/`,
+                success:function(response){
+                    let obj = self.parseObject(response.book_titles)
+                    self.book_titles = obj
+                    self.book_titles.length > 0 ? null : self.handleSwalNotifications('Not found any book title','info','Close')
+                },
+                error:function(err){
+                    console.log('Error book search ', err)
+                    self.handleSwalNotifications('Please try again','error','Close')
+                }
+            })
+        },
+
+
+        parseObject(obj){
+            let parsed_obj = JSON.parse(obj.replace(/'/g, "\""));
+            return parsed_obj
+        }
 
         // hideAlertCart(){
         //         setTimeout(()=>{

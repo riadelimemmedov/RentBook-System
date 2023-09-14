@@ -6,12 +6,16 @@ from django.urls import reverse_lazy
 from django.http import HttpResponse, JsonResponse
 from django.views.generic import ListView,FormView
 from django.utils.html import strip_tags
+from django.core import serializers
 
 
 #!Models,Forms and Serializer classes
 from .models import Book,BookTitle
 from .forms import BookTitleForm
 
+
+#!Python modules and functions
+import string
 
 # Create your views here.
 
@@ -29,19 +33,29 @@ class BookListView(ListView,FormView):
     def get_success_url(self):#If you want modify url before redirect to other page
         return self.request.path
     
+    
+    def get(self, request, *args, **kwargs):
+        if self.is_ajax(request):
+            parameter = kwargs.get('letter', 'A')
+            books_titles = BookTitle.objects.filter(book_title__startswith=parameter)
+            data = serializers.serialize("json", books_titles)
+            return JsonResponse({'book_titles':data}, safe=False, status=200)
+        return super().get(request, *args, **kwargs)
+
+
 
     
     def get_queryset(self):
-        return Book.objects.all().order_by('-created')
-    
+        pass
+        
+        
     
     def get_context_data(self,**kwargs):
         context = super(BookListView, self).get_context_data(**kwargs)
-        context['name'] = 'John'
-        context['form'] = self.get_form_class()
-        context['qs'] = self.get_queryset()
-        
+        letters = list(string.ascii_uppercase)
+        context['letters'] = letters
         return context
+    
     
     @classmethod
     def is_ajax(cls, request):

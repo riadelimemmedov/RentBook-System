@@ -75,7 +75,30 @@
     
 
     <!-- !Header -->
-    {% include "components/header.html" with title="Book titles" description="List of all the book titles available" %}
+    {% include "components/header.html" with title="Book titles" description="List of all the book titles available" is_form_available=True icon="<i class='fa-solid fa-plus text-dark fw-bold fa-xl'></i>" %}
+
+
+    <!-- !Letters -->
+    {% for letter in letters %}
+        <a @click="searchBookTitle('{{letter}}')">
+            <button class="transition ease-in-out delay-150 hover:scale-110 text-lg font-black text-gray-900 dark:text-white hover:bg-slate-300 duration-300" :class="{'underline': selected_letter == '{{letter|upper}}'}">
+                {{letter}}
+            </button>         
+        </a>
+    {% endfor %}
+
+    <hr>
+    <ul class="mt-3">
+        <li v-for="title in book_titles" :key="title.pk">
+            <p class="text-gray-500 dark:text-gray-400">Go to detail &nbsp;<a href="#" class="inline-flex items-center font-medium text-blue-600 dark:text-blue-500 hover:underline">
+                [[title.fields.book_title]]
+                <svg class="w-4 h-4 ml-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
+                </svg>
+                </a>
+            </p>
+        </li>
+    </ul>
 
     
     <!-- !Book Title Form -->
@@ -103,7 +126,7 @@
 
 
 
-
+    <!-- <button class="btn btn-danger mt-5" @click="searchBook">Search book titles</button> -->
 
         <!-- 
                 <form action="{% url 'book:books' %}" method="POST">
