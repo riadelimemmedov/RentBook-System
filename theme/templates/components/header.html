@@ -6,7 +6,7 @@
     <div>
         {% if is_form_available %}
                 <div>
-                    <button class="bg-transparent-1 border-2 border-white text-white hover:bg-white hover:text-slate-900 p-3 rounded-xl text-xl" id="open-modal-btn">{{ icon }}</button>
+                    <button class="bg-transparent-1 border-2 border-white text-white hover:bg-white hover:text-slate-900 p-3 rounded-xl text-xl" id="open-modal-btn" @click="openForm">{{ icon }}</button>
                 </div>
         {% endif %}
     </div>

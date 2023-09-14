@@ -131,7 +131,22 @@ var book = new Vue({
         parseObject(obj){
             let parsed_obj = JSON.parse(obj.replace(/'/g, "\""));
             return parsed_obj
+        },
+
+        openForm(){
+            this.$refs.formModal.classList.remove('hidden')
+        },
+
+
+        cancelForm(e){
+            this.$refs.formModal.classList.add('hidden')
+        },
+
+
+        getFormModal(e){
+            e.target.id  == 'backdrop' ? this.$refs.formModal.classList.add('hidden') : null
         }
+
 
         // hideAlertCart(){
         //         setTimeout(()=>{
