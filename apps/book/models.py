@@ -28,6 +28,29 @@ from PIL import Image
 
 # Create your models here.
 
+
+
+#*TagBook
+class TagBook(TimeStampedModel):
+    tag_book_name = models.CharField(_('Name'), max_length=50, blank=False,unique=True,db_index=True,help_text='Enter book tag')
+    tag_book_slug = AutoSlugField(_('Slug'),populate_from='tag_book_name',unique=True,db_index=True,blank=True)
+    
+    
+    class Meta:
+        verbose_name = 'Tag Book'
+        verbose_name_plural = 'Tags Book'
+        
+        
+    def __str__(self):
+        return f"{self.tag_book_name}"
+    
+    
+    def tag_count(self):
+        return self.tag_book.all().count()
+
+
+
+
 #*CategoryBook
 class CategoryBook(TimeStampedModel):
     category_book_name = models.CharField(_('Name'),max_length=50,blank=False,unique=True,db_index=True,help_text="Enter a book genre (e.g. Science Fiction, French Poetry etc.)")
@@ -40,6 +63,10 @@ class CategoryBook(TimeStampedModel):
 
     def __str__(self):
         return f"{self.category_book_name}"
+    
+    
+    def category_count(self):
+        return self.category_book.all().count()
     
     
 
@@ -133,6 +160,7 @@ class Book(TimeStampedModel):
     book_summary=models.TextField(_('Summary'),max_length=800,null=True,blank=True,help_text="Summary about the book")
     book_pages = models.PositiveIntegerField(_('Pages Count'),default=0)
     book_category = models.ForeignKey(CategoryBook,verbose_name=(_('Category Book')),on_delete=models.SET_NULL,null=True,related_name='category_book')
+    book_tag = models.ManyToManyField(TagBook,verbose_name=(_('Tag Book')),null=True, related_name='tag_book')
     book_type = models.CharField(_('Type'),max_length=50,choices=BookChoices.choices,null=True)
     in_stock = models.BooleanField(_('In Stock'),default=False)
     edition = models.IntegerField(_('Edition'),blank=True,null=True)

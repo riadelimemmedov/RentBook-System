@@ -9,7 +9,8 @@ var book = new Vue({
         errors:null,
         errors_field:null,
         selected_letter:null,
-        book_titles:null
+        book_titles:null,
+        book_titles_object:null,
     },
     methods: {
         checkForm(e){
@@ -103,6 +104,7 @@ var book = new Vue({
             }
             return error_field_arr
         },
+        
 
         extractText(error) {
             return error[0]
@@ -117,11 +119,11 @@ var book = new Vue({
                 url: `http://127.0.0.1:8000/book/${letter}/`,
                 success:function(response){
                     let obj = self.parseObject(response.book_titles)
-                    self.book_titles = obj
+                    self.book_titles_object = obj
+                    obj.length < 3 ? self.book_titles=obj : self.book_titles=obj.slice(obj.length - 3,obj.length)
                     self.book_titles.length > 0 ? null : self.handleSwalNotifications('Not found any book title','info','Close')
                 },
                 error:function(err){
-                    console.log('Error book search ', err)
                     self.handleSwalNotifications('Please try again','error','Close')
                 }
             })

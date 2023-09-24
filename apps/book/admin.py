@@ -61,6 +61,5 @@ class BookModelAdmin(ExportActionMixin,admin.ModelAdmin):
     
 #register created custokm model to django admin site
 admin.site.register(Book,BookModelAdmin)
-
-
 admin.site.register(CategoryBook)
+admin.site.register(TagBook)

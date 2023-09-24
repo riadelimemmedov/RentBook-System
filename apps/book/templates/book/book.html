@@ -7,136 +7,142 @@
 <!-- !Css -->
 {% block css %} {% endblock css %}
 
+
 <!-- !Title -->
 <title>{% block title %} Book {% endblock title %}</title>
 
 
-<!-- !Include Base Template -->
-
 
 <!-- *Child Component -->
-{% block content %}
-<div id="book">
+    {% block content %}
+        <div id="book">
 
-    <div ref="alert_box">
-        <div v-if="errors.length > 0" v-for="error in errors" :key="error.id">
-            <div class="alert alert-danger">
-                <strong>[[extractText(error)]]</strong>
+            <div ref="alert_box">
+                <div v-if="errors.length > 0" v-for="error in errors" :key="error.id">
+                    <div class="alert alert-danger">
+                        <strong>[[extractText(error)]]</strong>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
 
 
-    <!-- !Form modal -->
-    <div class="hidden relative z-50" aria-labelledby="modal-title" role="dialog" aria-modal="true" id="form-modal" @click="getFormModal" ref="formModal">
-        <div class="fixed inset-0 bg-gray-500 bg-opacity-75"></div>
-        <div class="fixed inset-0 z-10 overflow-y-auto">
-            <div class="flex min-h-full items-center justify-center p-4 text-center" id="backdrop">
-                <div class="relative transform overflow-hidden rounded-lg text-left shadow-xl transition-all my-8">
-                    <form @submit.prevent="checkForm" id="book_form">
-                        {% csrf_token %}
-                        <div class="bg-white dark:text-white dark:bg-slate-300 pt-5 pb-4 px-8">
-                            <div class="mt-3 text-left">
-                                <h3 class="text-2xl font-medium leading-6 text-gray-900 text-center pb-3 text-secondary" id="modal-title">
-                                    Add new book title
-                                </h3>
-                                <div class="mt-3">
-                                    <div class="mb-2">
-                                        <label for="{{form.book_title.id_for_label}}"
-                                            class="block font-bold text-slate-800 dark:text-slate-300">Title</label>
-                                        {{ form.book_title|add_class:'bg-slate-100 dark:bg-slate-300 text-slate-800 rounded p-2 w-full' }}
-                                    </div>
-                                    <div class="mb-2">
-                                        <label for="{{form.book_author.id_for_label}}"
-                                            class="block font-bold text-slate-800 dark:text-slate-300">Author</label>
-                                        {{ form.book_author|add_class:'bg-slate-100 dark:bg-slate-300 text-slate-800 rounded p-2 w-full' }}
-                                    </div>
-                                    <div class="mb-2">
-                                        <label for="{{ form.book_publisher.id_for_label }}"
-                                            class="block font-bold text-slate-800 dark:text-slate-300">Publisher:</label>
-                                        {{ form.book_publisher|add_class:'bg-slate-100 dark:bg-slate-300 text-slate-800 rounded p-2 w-full' }}
+            <!-- !Form modal -->
+            <div class="hidden relative z-50" aria-labelledby="modal-title" role="dialog" aria-modal="true" id="form-modal" @click="getFormModal" ref="formModal">
+                <div class="fixed inset-0 bg-gray-500 bg-opacity-75"></div>
+                <div class="fixed inset-0 z-10 overflow-y-auto">
+                    <div class="flex min-h-full items-center justify-center p-4 text-center" id="backdrop">
+                        <div class="relative transform overflow-hidden rounded-lg text-left shadow-xl transition-all my-8">
+                            <form @submit.prevent="checkForm" id="book_form">
+                                {% csrf_token %}
+                                <div class="bg-white dark:text-white dark:bg-slate-300 pt-5 pb-4 px-8">
+                                    <div class="mt-3 text-left">
+                                        <h3 class="text-2xl font-medium leading-6 text-gray-900 text-center pb-3 text-secondary" id="modal-title">
+                                            Add new book title
+                                        </h3>
+                                        <div class="mt-3">
+                                            <div class="mb-2">
+                                                <label for="{{form.book_title.id_for_label}}"
+                                                    class="block font-bold text-slate-800 dark:text-slate-300">Title</label>
+                                                {{ form.book_title|add_class:'bg-slate-100 dark:bg-slate-300 text-slate-800 rounded p-2 w-full' }}
+                                            </div>
+                                            <div class="mb-2">
+                                                <label for="{{form.book_author.id_for_label}}"
+                                                    class="block font-bold text-slate-800 dark:text-slate-300">Author</label>
+                                                {{ form.book_author|add_class:'bg-slate-100 dark:bg-slate-300 text-slate-800 rounded p-2 w-full' }}
+                                            </div>
+                                            <div class="mb-2">
+                                                <label for="{{ form.book_publisher.id_for_label }}"
+                                                    class="block font-bold text-slate-800 dark:text-slate-300">Publisher:</label>
+                                                {{ form.book_publisher|add_class:'bg-slate-100 dark:bg-slate-300 text-slate-800 rounded p-2 w-full' }}
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                                <div class="bg-gray-50 dark:text-white dark:bg-slate-400 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6 flex" style="margin-top:-22px !important">
+                                    <button type="submit" class="bg-primary hover:bg-blue-500 text-white font-semibold hover:text-black py-2 px-4 border border-blue-500 hover:border-transparent rounded flex-auto w-32" ref="create_book_btn">
+                                        Save
+                                    </button>
+                                    <button type="button" id="cancel-btn" class="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 border border-red-600 rounded mr-3 flex-auto w-32" @click="cancelForm">
+                                        Cancel
+                                    </button>
+                                </div>
+                            </form>
                         </div>
-                        <div class="bg-gray-50 dark:text-white dark:bg-slate-400 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6 flex" style="margin-top:-22px !important">
-                            <button type="submit" class="bg-primary hover:bg-blue-500 text-white font-semibold hover:text-black py-2 px-4 border border-blue-500 hover:border-transparent rounded flex-auto w-32" ref="create_book_btn">
-                                Save
-                            </button>
-                            <button type="button" id="cancel-btn" class="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 border border-red-600 rounded mr-3 flex-auto w-32" @click="cancelForm">
-                                Cancel
-                            </button>
-                        </div>
-                    </form>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
-    
+            
 
-    <!-- !Header -->
-    {% include "components/header.html" with title="Book titles" description="List of all the book titles available" is_form_available=True icon="<i class='fa-solid fa-plus text-dark fw-bold fa-xl'></i>" %}
+            <!-- !Header -->
+            {% include "components/header.html" with title="Book titles" description="List of all the book titles available" is_form_available=True icon="<i class='fa-solid fa-plus text-dark fw-bold fa-xl'></i>" %}
 
 
-    <!-- !Letters -->
-    {% for letter in letters %}
-        <a @click="searchBookTitle('{{letter}}')">
-            <button class="transition ease-in-out delay-150 hover:scale-110 text-lg font-black text-gray-900 dark:text-white hover:bg-slate-300 duration-300" :class="{'underline': selected_letter == '{{letter|upper}}'}">
-                {{letter}}
-            </button>         
-        </a>
-    {% endfor %}
-
-    <hr>
-    <ul class="mt-3">
-        <li v-for="title in book_titles" :key="title.pk">
-            <p class="text-gray-500 dark:text-gray-400">Go to detail &nbsp;<a href="#" class="inline-flex items-center font-medium text-blue-600 dark:text-blue-500 hover:underline">
-                [[title.fields.book_title]]
-                <svg class="w-4 h-4 ml-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
-                </svg>
+            <!-- !Letters -->
+            {% for letter in letters %}
+                <a @click="searchBookTitle('{{letter}}')">
+                    <button class="transition ease-in-out delay-150 hover:scale-110 text-lg font-black text-gray-900 dark:text-white hover:bg-slate-300 duration-300" :class="{'underline': selected_letter == '{{letter|upper}}'}">
+                        {{letter}}
+                    </button>         
                 </a>
-            </p>
-        </li>
-    </ul>
+            {% endfor %}
 
-    
-    <!-- !Book Title Form -->
-    <form action="{% url 'book:books' %}" method="POST" @submit.prevent="checkForm" id="book_form">
-            {% csrf_token %}
-            <div class="mt-3">
-                <div class="mb-2">
-                    <label for="{{form.book_title.id_for_label}}"
-                        class="block font-bold text-slate-800 dark:text-slate-300">Title</label>
-                    {{ form.book_title|add_class:'bg-slate-100 dark:bg-slate-300 text-slate-800 rounded p-2 w-full' }}
+            
+
+            <!-- !Book titles result -->
+            <hr>
+            <ul class="mt-3" v-if="book_titles_object">
+                <li v-for="title in book_titles" :key="title.pk">
+                    <p class="text-gray-500 dark:text-gray-400">Go to detail &nbsp;<a href="#" class="inline-flex items-center font-medium text-blue-600 dark:text-blue-500 hover:underline">
+                        [[title.fields.book_title]]
+                        <svg class="w-4 h-4 ml-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
+                        </svg>
+                        </a>
+                    </p>
+                </li>
+                <div v-if="book_titles_object.length>3" class="mt-1">
+                    <p><a href="{% url 'book:searched_books_result' %}" class="link-danger link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">Get all search results</a></p>
                 </div>
-                <div class="mb-2">
-                    <label for="{{form.book_author.id_for_label}}"
-                        class="block font-bold text-slate-800 dark:text-slate-300">Author</label>
-                    {{ form.book_author|add_class:'bg-slate-100 dark:bg-slate-300 text-slate-800 rounded p-2 w-full' }}
-                </div>
-                <div class="mb-2">
-                    <label for="{{ form.book_publisher.id_for_label }}"
-                        class="block font-bold text-slate-800 dark:text-slate-300">Publisher:</label>
-                    {{ form.book_publisher|add_class:'bg-slate-100 dark:bg-slate-300 text-slate-800 rounded p-2 w-full' }}
-                </div>
-            </div>
-        <button type="submit" class="p-3 bg-blue-500 text-white" ref="create_book_btn">Send</button>
-    </form>
+            </ul>
 
 
-
-    <!-- <button class="btn btn-danger mt-5" @click="searchBook">Search book titles</button> -->
-
-        <!-- 
-                <form action="{% url 'book:books' %}" method="POST">
+            
+            <!-- !Book Title Form -->
+            <form action="{% url 'book:books' %}" method="POST" @submit.prevent="checkForm" id="book_form">
                     {% csrf_token %}
-                    {{form.as_p}}
-                    <button type="submit" class="p-3 bg-blue-500 text-white">Send</button>
-                </form> 
-        -->
-</div>
-{% endblock content %}
+                    <div class="mt-3">
+                        <div class="mb-2">
+                            <label for="{{form.book_title.id_for_label}}"
+                                class="block font-bold text-slate-800 dark:text-slate-300">Title</label>
+                            {{ form.book_title|add_class:'bg-slate-100 dark:bg-slate-300 text-slate-800 rounded p-2 w-full' }}
+                        </div>
+                        <div class="mb-2">
+                            <label for="{{form.book_author.id_for_label}}"
+                                class="block font-bold text-slate-800 dark:text-slate-300">Author</label>
+                            {{ form.book_author|add_class:'bg-slate-100 dark:bg-slate-300 text-slate-800 rounded p-2 w-full' }}
+                        </div>
+                        <div class="mb-2">
+                            <label for="{{ form.book_publisher.id_for_label }}"
+                                class="block font-bold text-slate-800 dark:text-slate-300">Publisher:</label>
+                            {{ form.book_publisher|add_class:'bg-slate-100 dark:bg-slate-300 text-slate-800 rounded p-2 w-full' }}
+                        </div>
+                    </div>
+                <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded" ref="create_book_btn">Save Book</button>
+            </form>
+
+
+
+            <!-- <button class="btn btn-danger mt-5" @click="searchBook">Search book titles</button> -->
+
+                <!-- 
+                        <form action="{% url 'book:books' %}" method="POST">
+                            {% csrf_token %}
+                            {{form.as_p}}
+                            <button type="submit" class="p-3 bg-blue-500 text-white">Send</button>
+                        </form> 
+                -->
+        </div>
+    {% endblock content %}
 <!-- *Child Component -->
 
 

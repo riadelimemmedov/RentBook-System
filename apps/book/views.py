@@ -1,6 +1,7 @@
 
 #! Django function and methods
 from typing import Any
+from django.db.models.query import QuerySet
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.http import HttpResponse, JsonResponse
@@ -41,7 +42,6 @@ class BookListView(ListView,FormView):
             data = serializers.serialize("json", books_titles)
             return JsonResponse({'book_titles':data}, safe=False, status=200)
         return super().get(request, *args, **kwargs)
-
 
 
     
@@ -85,3 +85,17 @@ class BookListView(ListView,FormView):
             for error in errors:
                 error_messages.append(strip_tags({field_name:error}))
         return error_messages
+    
+    
+    
+    
+
+#?SearchedBooksListView
+class SearchedBooksListView(ListView):
+    model = Book
+    template_name = "book/searched_books.html"
+    context_object_name = "books"
+    
+    
+    def get_queryset(self):
+        pass
