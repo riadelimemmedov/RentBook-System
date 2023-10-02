@@ -97,5 +97,6 @@ class SearchedBooksListView(ListView):
     context_object_name = "books"
     
     
-    def get_queryset(self):
-        pass
+    def get_queryset(self,**kwargs):
+        searched_keyword = self.request.path.split('/')[-2]
+        return searched_keyword

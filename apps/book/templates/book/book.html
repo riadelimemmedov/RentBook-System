@@ -101,7 +101,7 @@
                     </p>
                 </li>
                 <div v-if="book_titles_object.length>3" class="mt-1">
-                    <p><a href="{% url 'book:searched_books_result' %}" class="link-danger link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">Get all search results</a></p>
+                    <p><a href="{% url 'book:searched_books_result' book_title='selected_letter' %}" @click="getAllSearchResult"  id="search_result" class="link-danger link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">Get all search results</a></p>
                 </div>
             </ul>
 
@@ -148,5 +148,5 @@
 
 <!-- !JavaScript -->
 {% block scripts %}
-<script src="{% static 'book/book.js' %}"></script>
+    <script type="text/javascript" src="{% static 'book/book.js' %}"></script>
 {% endblock scripts %}
