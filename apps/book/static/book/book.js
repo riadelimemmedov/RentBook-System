@@ -147,6 +147,19 @@ var book = new Vue({
 
         getFormModal(e){
             e.target.id  == 'backdrop' ? this.$refs.formModal.classList.add('hidden') : null
+        },
+
+
+        getAllSearchResult(e){
+            e.preventDefault();
+            let url = this.modifyLink(e.target.href)
+            window.location.href = url
+        },
+
+
+        modifyLink(url){
+            let modifiedUrl = `${url.split('/').slice(0, -2).join('/')}/${this.selected_letter}`;
+            return modifiedUrl
         }
 
 
