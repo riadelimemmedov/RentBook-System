@@ -95,8 +95,9 @@ class SearchedBooksListView(ListView):
     model = Book
     template_name = "book/searched_books.html"
     context_object_name = "books"
+    paginate_by = 2
     
     
     def get_queryset(self,**kwargs):
         searched_keyword = self.request.path.split('/')[-2]
-        return searched_keyword
+        return Book.objects.filter(title__book_title__icontains=searched_keyword)
