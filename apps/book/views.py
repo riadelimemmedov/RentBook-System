@@ -1,6 +1,7 @@
 
 #! Django function and methods
 from typing import Any
+from django import http
 from django.db.models.query import QuerySet
 from django.shortcuts import render
 from django.urls import reverse_lazy
@@ -8,11 +9,14 @@ from django.http import HttpResponse, JsonResponse
 from django.views.generic import ListView,FormView
 from django.utils.html import strip_tags
 from django.core import serializers
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
+
 
 
 #!Models,Forms and Serializer classes
 from .models import Book,BookTitle
 from .forms import BookTitleForm
+
 
 
 #!Python modules and functions
@@ -96,8 +100,37 @@ class SearchedBooksListView(ListView):
     template_name = "book/searched_books.html"
     context_object_name = "books"
     paginate_by = 2
+    books = None
+    
+    
+    @classmethod
+    def is_ajax(cls, request):
+        return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
     
     
     def get_queryset(self,**kwargs):
         searched_keyword = self.request.path.split('/')[-2]
-        return Book.objects.filter(title__book_title__icontains=searched_keyword)
+        self.books = Book.objects.filter(title__book_title__icontains=searched_keyword)
+        return self.books
+    
+    
+    def render_to_response(self,context,**response_kwargs):
+        if self.is_ajax(self.request):
+            paginator = Paginator(self.books, 2)
+            page = self.request.GET.get('page')
+            paged_books = paginator.get_page(page)
+            has_previous = paged_books.has_previous()
+            has_next = paged_books.has_next()
+            previous_page_number = paged_books.previous_page_number()
+            next_page_number = paged_books.next_page_number()
+            if paged_books:
+                data = []
+                for obj in paged_books:
+                    item = {
+                        "id":obj.id,
+                        "title":obj.title.book_title,
+                        "book_isbn":obj.book_isbn
+                    }
+                    data.append(item)
+                return JsonResponse({'paged_books':data,"has_previous":has_previous,"has_next":has_next,"previous_page_number":previous_page_number,"next_page_number":next_page_number},safe=False)
+        return super().render_to_response(context,**response_kwargs)

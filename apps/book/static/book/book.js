@@ -160,8 +160,7 @@ var book = new Vue({
         modifyLink(url){
             let modifiedUrl = `${url.split('/').slice(0, -2).join('/')}/${this.selected_letter}`;
             return modifiedUrl
-        }
-
+        },
 
         // hideAlertCart(){
         //         setTimeout(()=>{
