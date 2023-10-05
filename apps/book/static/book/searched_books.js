@@ -10,38 +10,44 @@ var search = new Vue({
     },
     methods: {
         loadPage(e) {
-            e.preventDefault();
-            const self = this; // Store a reference to the Vue instance
-            let url = null
-            
-            if(e.target.getAttribute('data-type') == 'next'){
-                console.log('Next')
-            }
-            else if(e.target.getAttribute('data-type') == 'prev'){
-                url = `${e.target.href}${this.previous_page_number=1}`
-                console.log('Previous url ', url)
-                console.log('Prev')
-            }
-
-            $.ajax({
-                type: 'GET',
-                url: e.target.href,
-                success: (response) => {  // Use an arrow function to maintain the correct context
-                    self.paged_books = response.paged_books;
-                    self.has_previous = response.has_previous;
-                    self.has_next = response.has_next;
-                    self.previous_page_number = response.previous_page_number
-                    self.next_page_number = response.next_page_number
-                },
-                error: function(err) {
-                    console.log('Error occurred when fetching page ', err);
-                }
-            });
+            // e.preventDefault()
+            // $.ajax({
+            //     type: 'GET',
+            //     url: e.target.href,
+            //     success: (response) => {  // Use an arrow function to maintain the correct context
+            //         self.paged_books = response.paged_books;
+            //         self.has_previous = response.has_previous;
+            //         self.has_next = response.has_next;
+            //         self.previous_page_number = response.previous_page_number
+            //         self.next_page_number = response.next_page_number
+            //     },
+            //     error: function(err) {
+            //         console.log('Error occurred when fetching page ', err);
+            //     }
+            // });
         },
     },
     created() {
-        this.has_previous=false 
-        this.has_next=true
-        this.previous_page_number=1
+        $.ajax({
+            type: 'GET',
+            url: `${window.location.href}`,
+            success: (response) => { 
+                const self = this
+                const books = self.$refs.books
+                const pagination = self.$refs.pagination
+                const spinner = self.$refs.loader
+
+                books.classList.add('d-none')
+                pagination.classList.add('d-none')
+                setTimeout(() => {
+                    books.classList.remove('d-none')
+                    pagination.classList.remove('d-none')
+                    spinner.classList.add('d-none')
+                }, 3000);
+            },
+            error: function(err) {
+                console.log('Error occurred when fetch data', err);
+            }
+        });
     }
 });

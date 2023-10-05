@@ -44,7 +44,7 @@ DEFAULT_APPS = [
 ]
 
 #!Third Part App
-THIRD_PARTY_APPS = ["django_cleanup","ckeditor","django_extensions",'django_countries','import_export','tailwind','django_browser_reload','widget_tweaks']
+THIRD_PARTY_APPS = ["django_cleanup","ckeditor","django_extensions",'django_countries','import_export','tailwind','django_browser_reload','widget_tweaks','djmoney']
 
 #!Created Apps
 CREATED_APPS = [

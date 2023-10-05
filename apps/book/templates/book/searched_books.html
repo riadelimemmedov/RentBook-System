@@ -17,20 +17,20 @@
     {% block content %}
         <div id="search">
             <!-- !Search result -->
-            <div class="grid grid-cols-5 gap-4">
-                {% for book in books  %}
+            <div class="grid grid-cols-5 gap-4" ref="books">
+                {% for book in books %}
                     <div  class="relative m-6 flex w-full max-w-xs flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md ml-0">
-                        <a class="relative mx-3 mt-3 flex h-60 overflow-hidden rounded-xl" href="#">
-                            <img class="object-cover" src="https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OHx8c25lYWtlcnxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60" alt="product image" />
+                        <a class="relative mx-3 mt-3 flex h-100 rounded-xl text-center" href="#">
+                            <img class="object-cover" style="max-width: 100%;" src="{{book.book_image.url}}" alt="product image" />
                             <span class="absolute top-0 left-0 m-2 rounded-full bg-black px-2 text-center text-sm font-medium text-white">39% OFF</span>
                         </a>
                         <div class="mt-4 px-5 pb-5">
                             <a href="#">
-                                <h5 class="text-xl tracking-tight text-slate-900">Nike Air MX Super 2500</h5>
+                                <h5 class="text-xl tracking-tight text-slate-900">{{book.title.book_title}}</h5>
                             </a>
                             <div class="mt-2 mb-5 flex items-center justify-between">
                                 <p>
-                                    <span class="text-3xl font-bold text-slate-900">$449</span>
+                                    <span class="text-3xl font-bold text-slate-900">{{book.price}}</span>
                                 </p>
                                 <div class="flex items-center ml-2 mt-1 text-center">
                                     <svg aria-hidden="true" class="h-5 w-5 text-yellow-300" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -82,17 +82,12 @@
 
             <!-- !Pagintion -->
             <nav aria-label="Page navigation example">
-                Boooks - [[paged_books]]
-                Previous - [[has_previous]]
-                Next - [[has_next]]
-                Previous page number - [[previous_page_number]]
-                Next page number - [[next_page_number]]
                 {% if is_paginated %}
-                    <ul class="flex items-center -space-x-px h-10 text-base">
-                        <div v-if="has_previous">
-                            <div v-if="has_previous || has_previous==null">
+                    <ul class="flex items-center -space-x-px h-10 text-base" ref="pagination">
+                        {% if page_obj.has_previous %}
+                            <div>
                                 <li>
-                                    <a href="?page=" data-type="prev" @click="loadPage" id="prev_page" class="flex items-center justify-center px-4 h-10 ml-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                                    <a href="?page={{page_obj.previous_page_number}}" data-type="prev" @click="loadPage" id="prev_page" class="flex items-center justify-center px-4 h-10 ml-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
                                         <span class="sr-only">Previous</span>
                                         <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
                                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 1 1 5l4 4"/>
@@ -100,10 +95,8 @@
                                     </a>
                                 </li>
                             </div>
-                        </div>
-
-                        <div v-else>
-                            <div v-if="has_previous==false">
+                        {% else %}
+                            <div>
                                 <li class="disabled">
                                     <a href="" @click="loadPage" class="flex items-center cursor-not-allowed opacity-50 justify-center px-4 h-10 ml-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
                                         <span class="sr-only">Previous</span>
@@ -113,10 +106,7 @@
                                     </a>
                                 </li>
                             </div>
-                        </div>
-
-                            
-
+                        {% endif %}
 
                         {% for i in paginator.page_range %}
                             {% if page_obj.number == i %}
@@ -132,38 +122,34 @@
 
 
                         {% if page_obj.has_next %}
-                            <div v-if="has_next || has_next==null">
-                                <li>
-                                    <a href="?page={{page_obj.next_page_number}}" data-type="next" @click="loadPage" class="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-                                        <span class="sr-only">Next</span>
-                                        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
-                                        </svg>
-                                    </a>
-                                </li>
-                            </div>
-                            <div v-if="has_next==false">
-                                <li class="disabled">
-                                    <a href="" @click="loadPage" class="flex items-center justify-center cursor-not-allowed opacity-50 px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-                                        <span class="sr-only">Next</span>
-                                        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
-                                        </svg>
-                                    </a>
-                                </li>
-                            </div>
+                            <li>
+                                <a href="?page={{page_obj.next_page_number}}" data-type="next" @click="loadPage" class="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                                    <span class="sr-only">Next</span>
+                                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
+                                    </svg>
+                                </a>
+                            </li>
+                        {% else %}
+                            <li class="disabled">
+                                <a href="" @click="loadPage" class="flex items-center justify-center cursor-not-allowed opacity-50 px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                                    <span class="sr-only">Next</span>
+                                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
+                                    </svg>
+                                </a>
+                            </li>
                         {% endif %}
                     </ul>
                 {% endif %}
-                
             </nav>
 
 
             <!-- !Loader -->
-            <div id="book_loader">
-                <div class="text-center" style="margin-top:300px;color:#0F172A">
-                    <div class="spinner-grow" style="width: 3rem; height: 3rem;" role="status">
-                        <span class="visually-hidden">Loading...</span>
+            <div class="flex items-center justify-center h-screen" ref="loader">
+                <div class="relative">
+                    <div class="h-24 w-24 rounded-full border-t-8 border-b-8 border-gray-200"></div>
+                    <div class="absolute top-0 left-0 h-24 w-24 rounded-full border-t-8 border-b-8 animate-spin" style="border-color: #0F172A !important;">
                     </div>
                 </div>
             </div>
