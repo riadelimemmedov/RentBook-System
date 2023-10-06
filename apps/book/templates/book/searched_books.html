@@ -22,7 +22,11 @@
                     <div  class="relative m-6 flex w-full max-w-xs flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md ml-0">
                         <a class="relative mx-3 mt-3 flex h-100 rounded-xl text-center" href="#">
                             <img class="object-cover" style="max-width: 100%;" src="{{book.book_image.url}}" alt="product image" />
-                            <span class="absolute top-0 left-0 m-2 rounded-full bg-black px-2 text-center text-sm font-medium text-white">39% OFF</span>
+                            <span class="absolute top-0 left-0 m-2 rounded-full bg-black px-2 text-center text-sm font-medium text-white">
+                                {% if book.discount_percentage is not None %}
+                                    {{book.discount_percentage}} % OFF
+                                {% endif %}
+                            </span>
                         </a>
                         <div class="mt-4 px-5 pb-5">
                             <a href="#">

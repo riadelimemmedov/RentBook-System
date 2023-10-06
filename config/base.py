@@ -54,7 +54,8 @@ CREATED_APPS = [
     'apps.book',
     'apps.customer',
     'apps.publisher',
-    'apps.rental'
+    'apps.rental',
+    'apps.cart',
 ]
 
 #!Installed Apps

@@ -21,6 +21,7 @@ var book = new Vue({
             const book_author = document.getElementById('id_book_author')
             const csrf = document.getElementsByName('csrfmiddlewaretoken')
 
+
             const fd = self.getBookTitleForm(csrf, book_title, book_publisher, book_author)
             // const checkedForm = self.checkFormFields([csrf[0].value, book_title.value, book_publisher.options[book_publisher.selectedIndex].text, book_author.options[book_author.selectedIndex].text])
             // const create_book_btn = self.$refs.create_book_btn
@@ -57,13 +58,22 @@ var book = new Vue({
         },
 
         getBookTitleForm(csrf,book_title,book_publisher,book_author){
+            console.log('blett ', book_title,book_publisher,book_author);
             const fd = new FormData()
             fd.append('csrfmiddlewaretoken', csrf[0].value)
+            console.log(csrf[0].value);
             fd.append('book_title',book_title.value)
+            console.log(book_title.value);
             fd.append('book_publisher',book_publisher.options[book_publisher.selectedIndex].text)
+            console.log(book_publisher.options[book_publisher.selectedIndex].text);
+            console.log(book_publisher.options[book_publisher.selectedIndex]);
             fd.append('book_publisher',book_publisher.options[book_publisher.selectedIndex].value)
+            console.log(book_publisher.options[book_publisher.selectedIndex].value);
             fd.append('book_author',book_author.options[book_author.selectedIndex].text)
+            console.log(book_author.options[book_author.selectedIndex].text);
             fd.append('book_author',book_author.options[book_author.selectedIndex].value)
+            console.log(book_author.options[book_author.selectedIndex].value);
+            console.log('Bunedi laa ', fd)
             return fd
         },
 

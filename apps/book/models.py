@@ -6,7 +6,6 @@ from django.utils.translation import gettext_lazy as _
 from django.core.files import File
 
 
-
 #! Third Party Packages
 from django_extensions.db.fields import AutoSlugField,RandomCharField
 from django_extensions.db.models import TimeStampedModel
@@ -15,21 +14,17 @@ from djmoney.models.fields import MoneyField
 import qrcode
 
 
-
 #!Models,Forms and Serializer classes
 from apps.rental.choices import *
 
 
 #!Python modules and function
-import uuid
 from io import BytesIO
 from PIL import Image
 
 
 
 # Create your models here.
-
-
 
 #*TagBook
 class TagBook(TimeStampedModel):
@@ -157,6 +152,7 @@ class Book(TimeStampedModel):
     title = models.ForeignKey(BookTitle,verbose_name=(_('Book Title')),on_delete=models.CASCADE,related_name='booktitle')
     qr_code = models.ImageField(_('Qr Code'),upload_to='qr_codes',blank=True,null=True,validators=[FileExtensionValidator(['png','jpg','jpeg'])])
     price = MoneyField(_('Price'),decimal_places=2, max_digits=8,null=True)
+    discount_percentage = models.CharField(_('Discount'),max_length=100,blank=True,null=True)
     book_isbn = RandomCharField(_('Book Id'),length=13,unique=True,blank=True,include_alpha=True,null=True)
     book_image = models.ImageField(_('Image'),upload_to='books',blank=True,null=True,validators=[FileExtensionValidator(['png','jpg','jpeg'])])
     book_language = models.CharField(_('Language'),max_length=50,choices=LanguagesChoices.choices,null=True)
