@@ -60,10 +60,12 @@
 
 
 <script>
-    //$(document).ready(function(){
-        //$("#user_dropdown").hide()
-        //$("#user_icon").click(function(){
-            //$("#user_dropdown").toggle(1000);
-        //});
-    //});
+        setTimeout((e)=>{
+            $("#user_dropdown").hide()
+            $(document).ready(function(){
+                $("#user_icon").click(function(){
+                    $("#user_dropdown").toggle(1000);
+                });
+            });
+        },0)
 </script>
