@@ -27,7 +27,7 @@ def changeTheme(request):
 
 
 #?HomeView
-class HomeView(LoginRequiredMixin,TemplateView):
+class HomeView(TemplateView):
     template_name = "abstract/main.html"
 
 

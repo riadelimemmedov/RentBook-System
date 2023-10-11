@@ -68,12 +68,11 @@ class Account(AbstractBaseUser,PermissionsMixin):
         MALE = "MALE",_("male")
         FEMALE = "FEMALE",_("female")
         
-        
     email = models.EmailField(_('Email'),max_length=100,unique=True)
     first_name = models.CharField(_('First name'),max_length=150,blank=False,null=True)#Add validation here
     last_name = models.CharField(_('Last name'),max_length=150,blank=False,null=True)#Add validation here
     username = models.CharField(_('Username'),max_length=150,blank=True)
-    phone = models.CharField(_('Phone'),max_length=100,blank=True,null=True,unique=True)#Use vue js for phone validation
+    phone = models.CharField(_('Phone'),max_length=100,blank=False,null=True,unique=True)#Use vue js for phone validation
     photo = models.ImageField(_('Photo'),upload_to='account',blank=True,null=True,validators=[FileExtensionValidator(['png','jpg','jpeg'])])
     is_admin = models.BooleanField(_('Admin status'),default=False,help_text=_('Designates whether the user is admin or not.'))
     is_staff = models.BooleanField(_('Staff status'),default=False,help_text=_('Designates whether the user can log into this admin site.'))
@@ -99,9 +98,9 @@ class Account(AbstractBaseUser,PermissionsMixin):
     def __str__(self):
         return f"{self.first_name}{self.last_name}"
     
-    def clean(self):
-        super().clean()
-        self.email = self.__class__.objects.normalize_email(self.email)
+    # def clean(self): => Not recommended
+    #     super().clean()
+    #     self.email = self.__class__.objects.normalize_email(self.email)
         
     def get_full_name(self):
         full_name = "{} {}".format(self.first_name,self.last_name)
@@ -110,7 +109,7 @@ class Account(AbstractBaseUser,PermissionsMixin):
 #*Profile
 class Profile(models.Model):
     account = models.OneToOneField(Account,verbose_name=(_('Account')),on_delete=models.CASCADE)
-    full_name = models.CharField(_('Username'),max_length=150,blank=True,null=True)
+    full_name = models.CharField(_('Full Name'),max_length=150,blank=True,null=True)
     slug = AutoSlugField(_('Slug'),populate_from='account',unique=True,db_index=True,blank=True)
     country = CountryField(verbose_name=_('Country'),blank=True)
     profile_id = RandomCharField(_('Profile Id'),length=6,unique=True,blank=True,include_alpha=True,null=True)
@@ -118,7 +117,7 @@ class Profile(models.Model):
     adress = models.CharField(_('Adress'),max_length=50,null=True,blank=True)
     
     def __str__(self):
-        return f"{self.username}"
+        return f"{self.full_name}"
     
     # def full_address(self):
         # return f"{self.country} - {self.city} - {self.state}"
@@ -129,3 +128,10 @@ class Profile(models.Model):
     class Meta:
         verbose_name = _('User Profile')
         verbose_name_plural = _('User Profiles')
+        
+        
+#create_user_profile
+def create_user_profile(sender,instance,created,**kwargs):
+    if created:
+        Profile.objects.create(account=instance)
+post_save.connect(create_user_profile,Account)

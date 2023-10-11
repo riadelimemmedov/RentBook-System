@@ -22,7 +22,7 @@
 
             <div class="col-start-13">
                 <div class="h-10 w-10 hover:ring-4 user cursor-pointer relative ring-blue-700/30 rounded-full bg-cover bg-center bg-[url('https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80')]" id="user_icon">
-                    <div class="drop-down w-48 overflow-hidden bg-white rounded-md shadow absolute top-12 right-3" id="user_dropdown">
+                    <div class="drop-down w-48 overflow-hidden bg-white rounded-md shadow absolute top-12 right-3 d-none" id="user_dropdown">
                         <ul>
                             <li class="px-3 py-3 bg-slate-900 hover:text-slate-200 text-sm font-medium flex items-center space-x-2">
                                     <span>
@@ -60,12 +60,14 @@
 
 
 <script>
-        setTimeout((e)=>{
-            $("#user_dropdown").hide()
-            $(document).ready(function(){
-                $("#user_icon").click(function(){
-                    $("#user_dropdown").toggle(1000);
-                });
-            });
-        },0)
+    let user_dropdown = document.getElementById("user_dropdown");
+    let user_icon = document.getElementById('user_icon');
+    let is_active = false;
+
+    //toggleUserDropdown
+    const toggleUserDropdown = () => {
+        user_dropdown.classList.toggle('d-none', is_active);
+        is_active = !is_active;
+    };
+    user_icon.addEventListener('click', toggleUserDropdown);
 </script>

@@ -68,8 +68,9 @@ class AccountAdmin(UserAdmin):
     list_filter = ("is_staff","is_superuser","is_admin","is_superadmin","is_active")
     list_display_links = ("thumbnail","first_name","last_name")
     search_fields = ("first_name", "last_name","email", "phone")
-    readonly_fields = ("date_joined","last_login")
+    readonly_fields = ("date_joined","last_login",'password')
     list_filter = ['first_name']
+    filter_horizontal = ()
     
 
 #*ProfileAdmin
