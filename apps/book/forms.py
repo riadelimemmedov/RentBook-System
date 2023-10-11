@@ -20,9 +20,7 @@ class BookTitleForm(forms.ModelForm):
     
     def clean(self):
         book_title = self.cleaned_data.get('book_title')
-        
-        print('dddddddddddd ', book_title)
-        
+                
         if(len(book_title)<5):
             error_msg = 'The title is too short'
             self.add_error('book_title',error_msg)
