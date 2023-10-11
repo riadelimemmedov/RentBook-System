@@ -63,6 +63,10 @@ CREATED_APPS = [
 INSTALLED_APPS = DEFAULT_APPS + CREATED_APPS + THIRD_PARTY_APPS
 
 
+#!AUTH_USER_MODEL
+AUTH_USER_MODEL = 'account.Account'
+
+
 TAILWIND_APP_NAME = 'theme'
 INTERNAL_IPS = [
     "127.0.0.1",
@@ -170,7 +174,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 CKEDITOR_UPLOAD_PATH = 'uploads/'
 CKEDITOR_IMAGE_BACKEND = "pillow"
 CKEDITOR_JQUERY_URL = '//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js'
-
 CKEDITOR_CONFIGS = {
     'default':
         {
