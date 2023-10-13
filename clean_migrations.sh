@@ -1,6 +1,10 @@
 # Define the path to your Django project
-APPS_PATH="D:\RentBookSystem\apps"
-ROOT_ABSTRACT="D:\RentBookSystem\abstract"
+#APPS_PATH="D:\RentBookSystem\apps"
+#ROOT_ABSTRACT="D:\RentBookSystem\abstract"
+
+APPS_PATH="/mnt/d/RentBookSystem/apps"
+ROOT_ABSTRACT="/mnt/d/RentBookSystem/abstract"
+
 
 # Iterate over each app in the project
 for APP_PATH in "$APPS_PATH"/*/; do
