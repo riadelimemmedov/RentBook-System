@@ -34,6 +34,5 @@ class Customer(TimeStampedModel):
         verbose_name = 'Customer'
         verbose_name_plural = 'Customers'
         
-    
     def __str__(self):
         return f"{self.customer_first_name} - {self.customer_last_name}"
