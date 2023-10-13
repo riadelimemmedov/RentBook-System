@@ -76,5 +76,5 @@ class AccountAdmin(UserAdmin):
 #*ProfileAdmin
 @admin.register(Profile)
 class ProfileAdmin(admin.ModelAdmin):
-    list_display = ['account','country','city','adress']
+    list_display = ['account','country','city','adress','slug']
     list_display_links = ['account']

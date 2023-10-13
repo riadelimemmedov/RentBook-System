@@ -23,6 +23,10 @@ from django_extensions.db.fields import AutoSlugField,RandomCharField
 from django_countries.fields import CountryField
 
 
+#!Helpers methods and functions
+from config.helpers import (setFullName)
+
+
 #?MyAccountManager
 class MyAccountManager(BaseUserManager):
     
@@ -96,39 +100,37 @@ class Account(AbstractBaseUser,PermissionsMixin):
         ordering = ['-date_joined']
         
     def __str__(self):
-        return f"{self.first_name}{self.last_name}"
+        return f"{self.username}"
     
-    # def clean(self): => Not recommended
-    #     super().clean()
-    #     self.email = self.__class__.objects.normalize_email(self.email)
+    def save(self, *args, **kwargs):
+        if not self.username:
+            username = setFullName(self.first_name,self.last_name)
+            ex = __class__.objects.filter(username=username).exists()
+            while ex:
+                i = len(__class__.objects.filter(first_name=self.first_name,last_name=self.last_name))
+                username = f"{self.first_name} {self.last_name}{i+1}"
+                ex = __class__.objects.filter(username=username).exists()#If return false,break out while loop and save username to database
+            self.username = username
+        super(Account, self).save(*args, **kwargs)
         
-    def get_full_name(self):
-        full_name = "{} {}".format(self.first_name,self.last_name)
-        return full_name.strip()
+    def get_username(self):
+        return f"{self.username}"
 
 #*Profile
 class Profile(models.Model):
     account = models.OneToOneField(Account,verbose_name=(_('Account')),on_delete=models.CASCADE)
-    full_name = models.CharField(_('Full Name'),max_length=150,blank=True,null=True)
     slug = AutoSlugField(_('Slug'),populate_from='account',unique=True,db_index=True,blank=True)
     country = CountryField(verbose_name=_('Country'),blank=True)
-    profile_id = RandomCharField(_('Profile Id'),length=6,unique=True,blank=True,include_alpha=True,null=True)
+    profile_key = RandomCharField(_('Profile Id'),length=24,unique=True,blank=True,include_alpha=True)
     city = models.CharField(_('City'),max_length=50,null=True,blank=True)
     adress = models.CharField(_('Adress'),max_length=50,null=True,blank=True)
+    additional_information = models.TextField(_('Additional Information'),blank=True)
     
     def __str__(self):
-        return f"{self.full_name}"
-    
-    # def full_address(self):
-        # return f"{self.country} - {self.city} - {self.state}"
-        
-    def save(self,*args,**kwargs):
-        self.full_name = f"{self.account.first_name}_{self.account.last_name}_{self.profile_id}"
-        super(Profile, self).save(*args,**kwargs)
+        return f"{self.account.username}"    
     class Meta:
         verbose_name = _('User Profile')
         verbose_name_plural = _('User Profiles')
-        
         
 #create_user_profile
 def create_user_profile(sender,instance,created,**kwargs):

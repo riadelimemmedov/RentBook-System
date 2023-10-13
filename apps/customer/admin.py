@@ -23,7 +23,7 @@ class CustomerResource(resources.ModelResource):
     customer_books = Field()
     class Meta:
         model = Customer
-        fields = ['customer_first_name','customer_last_name','customer_key','customer_rating','customer_book_count','customer_slug','customer_additional_information','customer_books']
+        fields = ['profile','customer_rating','customer_book_count','customer_books','customer_book_count']
         export_order = fields
         
     
@@ -43,8 +43,8 @@ class CustomerResource(resources.ModelResource):
 
 #*CustomerModelAdmin
 class CustomerModelAdmin(ExportActionMixin,admin.ModelAdmin):
-    list_display = ['customer_first_name','customer_last_name','customer_key','customer_rating','customer_book_count','customer_slug']
-    list_display_links = ['customer_first_name','customer_last_name']
+    list_display = ['profile','customer_rating','customer_book_count','customer_book_count']
+    list_display_links = ['profile']
     resource_class = CustomerResource
     
 #register created custokm model to django admin site
