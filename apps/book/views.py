@@ -33,10 +33,8 @@ class BookListView(ListView,FormView):
     context_object_name = "book_titles"
     # success_url = reverse_lazy('book:books') If you want redirect to other page after some process
     
-    
     def get_success_url(self):#If you want modify url before redirect to other page
         return self.request.path
-    
     
     def get(self, request, *args, **kwargs):
         if self.is_ajax(request):
@@ -46,12 +44,9 @@ class BookListView(ListView,FormView):
             return JsonResponse({'book_titles':data}, safe=False, status=200)
         return super().get(request, *args, **kwargs)
 
-
-    
     def get_queryset(self):
         pass
-        
-    
+            
     def get_context_data(self,**kwargs):
         context = super(BookListView, self).get_context_data(**kwargs)
         letters = list(string.ascii_uppercase)

@@ -59,7 +59,8 @@ else:
         path("book/",include('apps.book.urls',namespace='book')),                                       
         path("customer/",include('apps.customer.urls',namespace='customer')),                                       
         path("publisher/",include('apps.publisher.urls',namespace='publisher')),
-        path("rental/",include('apps.rental.urls',namespace='rental')),       
+        path("rental/",include('apps.rental.urls',namespace='rental')),   
+        path("account/",include('apps.account.urls',namespace='account'))    
     ]
     urlpatterns += urls_admin
 urlpatterns += i18n_patterns(path("admin/", admin.site.urls))
