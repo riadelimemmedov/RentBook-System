@@ -126,9 +126,10 @@
 
                         <!-- !Password -->
                         <div class="relative flex items-center mt-4">
-                            <input :type="showPassword ? 'text' : 'password'"
+                            <input :type="showPassword ? 'text' : 'password'" v-model="password" @input="checkPassword" ref="password"
                                 class="block w-full px-10 py-3 pr-12 text-gray-700 bg-white border rounded-lg dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
                                 placeholder="Password">
+                            
 
                             <div v-if="showPassword">
                                 <span class="absolute right-0 inset-y-0 flex items-center pr-3 cursor-pointer" @click="toggleShowPassword(type='password')">
@@ -162,7 +163,7 @@
 
                         <!-- !Repassword -->
                         <div class="relative flex items-center mt-4">
-                            <input :type="showRepassword ? 'text' : 'password'"
+                            <input :type="showRepassword ? 'text' : 'password'" v-model="repassword" @input="checkPassword" ref="repassword"
                                 class="block w-full px-10 py-3 pr-12 text-gray-700 bg-white border rounded-lg dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
                                 placeholder="Password">
 
@@ -198,22 +199,34 @@
 
                         <!-- !Password validation -->
                         <div class="grid grid-cols-1 gap-1 ml-1 mt-2">
-                            <div class="flex items-center">
-                                <div class="w-2 h-2 rounded-full bg-gray-300"></div>
-                                <span class="ml-2 whitespace-nowrap text-base text-gray-500">6-15 character</span>
+                            <div v-if="password != null || repassword != null">
+                                <div class="flex items-center">
+                                    <div class="w-2 h-2 rounded-full" :class="passwordLengthClass('passwordLength',password.length >= 8,'bgId')" ref="bgId"></div>
+                                    <span class="ml-2 whitespace-nowrap text-base" :class="passwordLengthTextClass('passwordLength',password.length >= 8,'textId')" ref="textId">Password must be at least 8 characters long</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <div class="w-2 h-2 rounded-full" :class="passwordUppercaseClass()"></div>
+                                    <span class="ml-2 whitespace-nowrap text-base" :class="passwordUppercaseTextClass()">Password must contain at least one uppercase letter</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <div class="w-2 h-2 rounded-full bg-red-500"></div>
+                                    <span class="ml-2 whitespace-nowrap text-base text-red-500">Password must contain at least one lowercase letter</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <div class="w-2 h-2 rounded-full bg-red-500"></div>
+                                    <span class="ml-2 whitespace-nowrap text-base text-red-500">Password must contain at least one number</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <div class="w-2 h-2 rounded-full bg-red-500"></div>
+                                    <span class="ml-2 whitespace-nowrap text-base text-red-500">Password must contain at least one special character</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <div class="w-2 h-2 rounded-full bg-red-500"></div>
+                                    <span class="ml-2 whitespace-nowrap text-base text-red-500">Password must be match</span>
+                                </div>
+
                             </div>
-                            <div class="flex items-center">
-                                <div class="w-2 h-2 rounded-full bg-gray-300"></div>
-                                <span class="ml-2 whitespace-nowrap text-base text-gray-500">At least 1 digit</span>
-                            </div>
-                            <div class="flex items-center">
-                                <div class="w-2 h-2 rounded-full bg-gray-300"></div>
-                                <span class="ml-2 whitespace-nowrap text-base text-gray-500">At least 1 letter</span>
-                            </div>
-                            <div class="flex items-center">
-                                <div class="w-2 h-2 rounded-full bg-gray-300"></div>
-                                <span class="ml-2 whitespace-nowrap text-base text-gray-500">For password validation</span>
-                            </div>
+
                         </div>
 
                         <!-- !Membership aggrement -->
