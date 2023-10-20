@@ -201,12 +201,12 @@
                         <div class="grid grid-cols-1 gap-1 ml-1 mt-2">
                             <div v-if="password != null || repassword != null">
                                 <div class="flex items-center">
-                                    <div class="w-2 h-2 rounded-full" :class="passwordLengthClass('passwordLength',password.length >= 8,'bgId')" ref="bgId"></div>
-                                    <span class="ml-2 whitespace-nowrap text-base" :class="passwordLengthTextClass('passwordLength',password.length >= 8,'textId')" ref="textId">Password must be at least 8 characters long</span>
+                                    <div class="w-2 h-2 rounded-full" :class="passwordUppercaseClass()"></div>
+                                    <span class="ml-2 whitespace-nowrap text-base" :class="passwordUppercaseTextClass()">Password must be at least 8 characters long</span>
                                 </div>
                                 <div class="flex items-center">
-                                    <div class="w-2 h-2 rounded-full" :class="passwordUppercaseClass()"></div>
-                                    <span class="ml-2 whitespace-nowrap text-base" :class="passwordUppercaseTextClass()">Password must contain at least one uppercase letter</span>
+                                    <div class="w-2 h-2 rounded-full" :class=""></div>
+                                    <span class="ml-2 whitespace-nowrap text-base" :class="">Password must contain at least one uppercase letter</span>
                                 </div>
                                 <div class="flex items-center">
                                     <div class="w-2 h-2 rounded-full bg-red-500"></div>
