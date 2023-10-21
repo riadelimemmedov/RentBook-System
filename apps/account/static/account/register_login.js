@@ -10,7 +10,8 @@ var register_login = new Vue({
         type:null,
         uppercaseBg:'uppercaseBg',
         upperCaseText:'upperCaseText',
-        validationResult:{}
+        validationResult:{},
+        isAgree:false,
     },
     methods: {
         toggleShowPassword(type=null){
@@ -28,78 +29,77 @@ var register_login = new Vue({
 
         getResult(e){
             e.preventDefault();
-            console.log('Least eigt number ', this.validationResult['least_eight_character'])
-            console.log('Least uppercase ', this.validationResult['least_uppercase_character'])
-            console.log('Least lowercase ', this.validationResult['least_lowercase_character'])
-            console.log('Least number ', this.validationResult['least_one_number'])
-            console.log('Least special ', this.validationResult['least_special_character'])
-            console.log('Password is match ', this.validationResult['is_match'])
+        },
+
+        registerForm(e){
+            e.preventDefault()
+            console.log('Register form triggered')
         }
     },
 
     computed:{
         // Check for at least 8 characters
         circleColorLeastEightCharacter(){
-            let result = {'bg-green-500': this.password.length >= 8,'bg-red-500': this.password.length < 8};
+            let result = {'bg-success': this.password.length >= 8,'bg-danger': this.password.length < 8};
             Object.values(result)[0] == true ? this.validationResult['least_eight_character'] = Object.values(result)[0] : delete this.validationResult.least_eight_character
             return result               
         },
         textColorLeastEightCharacter(){
-            return {'text-green-500': this.password.length >= 8,'text-red-500': this.password.length < 8};
+            return {'text-success': this.password.length >= 8,'text-danger': this.password.length < 8};
         },
 
         // Check for at least one uppercase letter
         circleColorLeastOneUpperCaseCharacter(){
-            let result = {'bg-green-500': !!/[A-Z]/.test(this.password),'bg-red-500': !/[A-Z]/.test(this.password)}
+            let result = {'bg-success': !!/[A-Z]/.test(this.password),'bg-danger': !/[A-Z]/.test(this.password)}
             Object.values(result)[0] == true ? this.validationResult['least_uppercase_character'] = Object.values(result)[0] : delete this.validationResult.least_uppercase_character
             return result
         },
         textColorLeastOneUpperCaseCharacter(){
-            return {'text-green-500': !!/[A-Z]/.test(this.password),'text-red-500': !/[A-Z]/.test(this.password)}
+            return {'text-success': !!/[A-Z]/.test(this.password),'text-danger': !/[A-Z]/.test(this.password)}
         },  
 
 
         // Check for at least one lowercase letter
         circleColorLeastOneLowerCaseCharacter(){
-            let result = {'bg-green-500': !!/[a-z]/.test(this.password),'bg-red-500': !/[A-Z]/.test(this.password)}
+            let result = {'bg-success': !!/[a-z]/.test(this.password),'bg-danger': !/[a-z]/.test(this.password)}
             Object.values(result)[0] == true ? this.validationResult['least_lowercase_character'] = Object.values(result)[0] : delete this.validationResult.least_lowercase_character
             return result
         },
         textColorLeastOneLowerCaseCharacter(){
-            return {'text-green-500': !!/[a-z]/.test(this.password),'text-red-500': !/[A-Z]/.test(this.password)}
+            return {'text-success': !!/[a-z]/.test(this.password),'text-danger': !/[a-z]/.test(this.password)}
         },
 
 
         // Check for at least one number
         circleColorLeastOneNumberCharacter(){
-            let result = {'bg-green-500': !!/\d/.test(this.password),'bg-red-500': !!/\d/.test(this.password)}
+            let result = {'bg-success': !!/\d/.test(this.password),'bg-danger': !/\d/.test(this.password)}
             Object.values(result)[0] == true ? this.validationResult['least_one_number'] = Object.values(result)[0] : delete this.validationResult.least_one_number
             return result
         },
         textColorLeastOneNumberCharacter(){
-            return {'text-green-500': !!/\d/.test(this.password),'text-red-500': !!/\d/.test(this.password)}
+            return {'text-success': !!/\d/.test(this.password),'text-danger': !/\d/.test(this.password)}
         },
 
 
         // Check for at least one special character
         circleColorLeastOneSpecialCharacter(){
-            let result = {'bg-green-500': !!/[!@#$%^&*]/.test(this.password),'bg-red-500': !/[!@#$%^&*]/.test(this.password)}
+            let result = {'bg-success': !!/[!@#$%^&*]/.test(this.password),'bg-danger': !/[!@#$%^&*]/.test(this.password)}
             Object.values(result)[0] == true ? this.validationResult['least_special_character'] = Object.values(result)[0] : delete this.validationResult.least_special_character
             return result
         },
         textColorLeastOneSpecialCharacter(){
-            return {'text-green-500': !!/[!@#$%^&*]/.test(this.password),'text-red-500': !/[!@#$%^&*]/.test(this.password)}
+            return {'text-success': !!/[!@#$%^&*]/.test(this.password),'text-danger': !/[!@#$%^&*]/.test(this.password)}
         },
 
 
         //Check password is match or not
         circleColorMatchPassword(){
-            let result = {'bg-green-500': this.password === this.repassword, 'bg-red-500': this.password !== this.repassword}
+            let result = {'bg-success': this.password === this.repassword, 'bg-danger': this.password !== this.repassword}
             Object.values(result)[0] == true ? this.validationResult['is_match'] = Object.values(result)[0] : delete this.validationResult.is_match
             return result
         },
         textColorMatchPassword(){
-            return {'text-green-500': this.password === this.repassword, 'text-red-500': this.password !== this.repassword}
+            return {'text-success': this.password === this.repassword, 'text-danger': this.password !== this.repassword}
         }
     },
 
