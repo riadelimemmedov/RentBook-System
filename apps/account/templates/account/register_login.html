@@ -195,34 +195,35 @@
                                 </svg>
                             </span>
                         </div>
-                            
+
+                        <button @click="getResult">Get validaton result</button>
 
                         <!-- !Password validation -->
                         <div class="grid grid-cols-1 gap-1 ml-1 mt-2">
                             <div v-if="password != null || repassword != null">
                                 <div class="flex items-center">
-                                    <div class="w-2 h-2 rounded-full" :class="passwordUppercaseClass()"></div>
-                                    <span class="ml-2 whitespace-nowrap text-base" :class="passwordUppercaseTextClass()">Password must be at least 8 characters long</span>
+                                    <div class="w-2 h-2 rounded-full" :class="circleColorLeastEightCharacter"></div>
+                                    <span class="ml-2 whitespace-nowrap text-base" :class="textColorLeastEightCharacter">Password must be at least 8 characters long</span>
                                 </div>
                                 <div class="flex items-center">
-                                    <div class="w-2 h-2 rounded-full" :class=""></div>
-                                    <span class="ml-2 whitespace-nowrap text-base" :class="">Password must contain at least one uppercase letter</span>
+                                    <div class="w-2 h-2 rounded-full" :class="circleColorLeastOneUpperCaseCharacter"></div>
+                                    <span class="ml-2 whitespace-nowrap text-base" :class="textColorLeastOneUpperCaseCharacter">Password must contain at least one uppercase letter</span>
                                 </div>
                                 <div class="flex items-center">
-                                    <div class="w-2 h-2 rounded-full bg-red-500"></div>
-                                    <span class="ml-2 whitespace-nowrap text-base text-red-500">Password must contain at least one lowercase letter</span>
+                                    <div class="w-2 h-2 rounded-full bg-red-500" :class="circleColorLeastOneLowerCaseCharacter"></div>
+                                    <span class="ml-2 whitespace-nowrap text-base text-red-500" :class="textColorLeastOneLowerCaseCharacter">Password must contain at least one lowercase letter</span>
                                 </div>
                                 <div class="flex items-center">
-                                    <div class="w-2 h-2 rounded-full bg-red-500"></div>
-                                    <span class="ml-2 whitespace-nowrap text-base text-red-500">Password must contain at least one number</span>
+                                    <div class="w-2 h-2 rounded-full bg-red-500" :class="circleColorLeastOneNumberCharacter"></div>
+                                    <span class="ml-2 whitespace-nowrap text-base text-red-500" :class="textColorLeastOneNumberCharacter">Password must contain at least one number</span>
                                 </div>
                                 <div class="flex items-center">
-                                    <div class="w-2 h-2 rounded-full bg-red-500"></div>
-                                    <span class="ml-2 whitespace-nowrap text-base text-red-500">Password must contain at least one special character</span>
+                                    <div class="w-2 h-2 rounded-full bg-red-500" :class="circleColorLeastOneSpecialCharacter"></div>
+                                    <span class="ml-2 whitespace-nowrap text-base text-red-500" :class="textColorLeastOneSpecialCharacter">Password must contain at least one special character</span>
                                 </div>
                                 <div class="flex items-center">
-                                    <div class="w-2 h-2 rounded-full bg-red-500"></div>
-                                    <span class="ml-2 whitespace-nowrap text-base text-red-500">Password must be match</span>
+                                    <div class="w-2 h-2 rounded-full" :class="circleColorMatchPassword"></div>
+                                    <span class="ml-2 whitespace-nowrap text-base text-red-500" :class="textColorMatchPassword">Password must be match</span>
                                 </div>
 
                             </div>
