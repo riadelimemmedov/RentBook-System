@@ -53,35 +53,82 @@ var register_login = new Vue({
         },
 
         isValidEmail(){
-            !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.email) ? this.$refs.email.classList.add('border-danger') :  this.$refs.email.classList.remove('border-danger')
+            if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.email)){
+                this.$refs.email.classList.add('border-danger')
+                return false;
+            }
+            else{
+                this.$refs.email.classList.remove('border-danger')
+                return true;
+            }
+            
         },
 
         isValidPhoneNumber(){
-            !/^\d+$/.test(this.phone) ? this.$refs.phone.classList.add('border-danger') : this.$refs.phone.classList.remove('border-danger') 
+            if(!/^\d+$/.test(this.phone)){
+                this.$refs.phone.classList.add('border-danger')
+                return false;
+            }
+            else{
+                this.$refs.phone.classList.remove('border-danger') 
+                return true;
+            }
         },
 
-        validateFormField(){
-            this.isValidEmail()
-            this.isValidPhoneNumber()
-
-            let form_field_value = {
-                "first_name":this.first_name,
-                "last_name":this.last_name,
-                // "email":this.email,
-                // "phone":this.phone,
-                // "password":this.password,
-                // "repassword":this.repassword,
+        isValidFirstLastName(formField){
+            let fieldNumber = 0
+            for (let key in formField) {
+                if(formField[key] == null || formField[key] == ''){
+                    fieldNumber++
+                    this.$refs[key].classList.add('border-danger')
+                }
+                else{
+                    this.$refs[key].classList.remove('border-danger')
+                }
             }
-
-            for (let key in form_field_value) {
-                form_field_value[key] == null || form_field_value[key] == '' ? this.$refs[key].classList.add('border-danger') : this.$refs[key].classList.remove('border-danger')
+            if(fieldNumber <= 2 && fieldNumber > 0){
+                return false
             }
-            Object.keys(this.validationResult).length!=6 ? [this.$refs.password, this.$refs.repassword].forEach(ref => ref.classList.add('border-danger')) : [this.$refs.password, this.$refs.repassword].forEach(ref => ref.classList.remove('border-danger'));
+            else{
+                return true
+            }
+        },
+
+        validatePasswordField(){
+            if(Object.keys(this.validationResult).length!=6){
+                [this.$refs.password, this.$refs.repassword].forEach(ref => ref.classList.add('border-danger'))
+                return false
+            }
+            else{
+                [this.$refs.password, this.$refs.repassword].forEach(ref => ref.classList.remove('border-danger'))
+                return true
+            }
+        },
+
+        validateUserMembershipAgreement(){
+            if(!this.isAgree){
+                this.$refs.isAgree.classList.add('border-danger')
+                return false
+            }
+            else{
+                this.$refs.isAgree.classList.remove('border-danger')
+                return true
+            }
+        },
+
+        validateForm(){
+            const isValidEmail = this.isValidEmail()
+            const isValidPhoneNumber = this.isValidPhoneNumber()
+            const isValidFirstLastName = this.isValidFirstLastName({"first_name":this.first_name,"last_name":this.last_name}) 
+            const isValidPassword = this.validatePasswordField()
+            const isValidMembershipAggrement = this.validateUserMembershipAgreement()
+            
+            return isValidEmail && isValidPhoneNumber && isValidFirstLastName && isValidPassword && isValidMembershipAggrement;
         },
 
         registerForm(e){
             e.preventDefault()
-            const isValidForm = this.validateFormField()
+            const isValidForm = this.validateForm()
             console.log('Is valid form ', isValidForm) 
         },
 
