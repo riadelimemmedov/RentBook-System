@@ -2,14 +2,20 @@ var register_login = new Vue({
     el: "#register_login",
     delimiters: ['[[', ']]'],
     data: {
+        //Form input value
+        first_name:null,
+        last_name:null,
+        gender:null,
+        account_type:null,
+        email:null,
         phone:null,
         password:null,
-        showPassword: false,
         repassword:null,
+
+        //Other value
+        showPassword: false,
         showRepassword:false,
         type:null,
-        uppercaseBg:'uppercaseBg',
-        upperCaseText:'upperCaseText',
         validationResult:{},
         isAgree:false,
     },
@@ -31,9 +37,76 @@ var register_login = new Vue({
             e.preventDefault();
         },
 
+
+        setErrorClass(field,class_name){
+            if(Array.isArray(field)){
+                field.forEach(ref=>ref.classList.add(class_name))
+            }
+            else{
+                if(field.classList.contains('border-danger')){
+                    field.classList.remove('border-danger')
+                }
+                else{
+                    field.classList.add('border-danger')
+                }
+            }
+        },
+
+        isValidEmail(){
+            !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.email) ? this.$refs.email.classList.add('border-danger') :  this.$refs.email.classList.remove('border-danger')
+        },
+
+        isValidPhoneNumber(){
+            !/^\d+$/.test(this.phone) ? this.$refs.phone.classList.add('border-danger') : this.$refs.phone.classList.remove('border-danger') 
+        },
+
+        validateFormField(){
+            this.isValidEmail()
+            this.isValidPhoneNumber()
+
+            let form_field_value = {
+                "first_name":this.first_name,
+                "last_name":this.last_name,
+                // "email":this.email,
+                // "phone":this.phone,
+                // "password":this.password,
+                // "repassword":this.repassword,
+            }
+
+            for (let key in form_field_value) {
+                form_field_value[key] == null || form_field_value[key] == '' ? this.$refs[key].classList.add('border-danger') : this.$refs[key].classList.remove('border-danger')
+            }
+            Object.keys(this.validationResult).length!=6 ? [this.$refs.password, this.$refs.repassword].forEach(ref => ref.classList.add('border-danger')) : [this.$refs.password, this.$refs.repassword].forEach(ref => ref.classList.remove('border-danger'));
+        },
+
         registerForm(e){
             e.preventDefault()
-            console.log('Register form triggered')
+            const isValidForm = this.validateFormField()
+            console.log('Is valid form ', isValidForm) 
+        },
+
+        handleGender(type) {
+            if(type=='Female'){
+                this.$refs.male.classList.remove('shadow-lg','bg-body');
+                this.$refs.female.classList.add('shadow-lg','bg-body');
+            }
+            else if(type=='Male'){
+                this.$refs.female.classList.remove('shadow-lg','bg-body');
+                this.$refs.male.classList.add('shadow-lg','bg-body');
+            }
+            this.gender = type;
+        },
+
+        handleAccountType(type){
+            if(type=='Buyer'){
+                this.$refs.seller.classList.remove('shadow-lg','bg-body');
+                this.$refs.buyer.classList.add('shadow-lg','bg-body');
+            }
+            else if(type=='Seller'){
+                this.$refs.buyer.classList.remove('shadow-lg','bg-body');
+                this.$refs.seller.classList.add('shadow-lg','bg-body');
+            }
+            this.account_type = type
         }
     },
 
@@ -100,7 +173,7 @@ var register_login = new Vue({
         },
         textColorMatchPassword(){
             return {'text-success': this.password === this.repassword, 'text-danger': this.password !== this.repassword}
-        }
+        },
     },
 
     mounted() {

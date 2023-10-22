@@ -52,10 +52,10 @@
 
                         <!-- !First Name and Last Name -->
                         <div class="relative items-center mt-8 grid grid-cols-2 gap-4">
-                            <input type="text"
+                            <input type="text" v-model="first_name" ref="first_name"
                                 class="block w-full py-3 text-gray-700 bg-white border rounded-lg px-6 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
                                 placeholder="First Name">
-                            <input type="text"
+                            <input type="text" v-model="last_name" ref="last_name"
                                 class="block w-full py-3 text-gray-700 bg-white border rounded-lg px-6 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
                                 placeholder="Last Name">
                         </div>
@@ -65,21 +65,21 @@
                         <div class="relative items-center mt-8">
                             <label class="text-gray-700 dark:text-gray-300 fw-bold mb-2 ml-1">Gender (Optional)</label>
                             <div class="flex gap-4">
-                                <button type="button"
-                                    class="block w-full py-3 text-gray-700 border rounded-lg px-6 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:bg-gray-200 dark:focus:border-blue-800 focus:ring-blue-800 focus:outline-none focus:ring focus:ring-opacity-40">Female</button>
-                                <button type="button"
-                                    class="block w-full py-3 text-gray-700 border rounded-lg px-6 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:bg-gray-200 dark:focus:border-blue-800 focus:ring-blue-800 focus:outline-none focus:ring focus:ring-opacity-40">Male</button>
+                                <button type="button" @click="handleGender('Female')" ref="female"
+                                    class="block w-full py-3 text-gray-700 border rounded-lg px-6 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600">Female</button>
+                                <button type="button"  @click="handleGender('Male')" ref="male"
+                                    class="block w-full py-3 text-gray-700 border rounded-lg px-6 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600">Male</button>
                             </div>
                         </div>
 
                         <!-- !Account Type -->
                         <div class="relative items-center mt-8">
-                            <label class="text-gray-700 dark:text-gray-300 fw-bold mb-2 ml-1">Account Type</label>
+                            <label class="text-gray-700 dark:text-gray-300 fw-bold mb-2 ml-1">Account Type (Optional)</label>
                             <div class="flex gap-4">
-                                <button type="button"
-                                    class="block w-full py-3 text-gray-700 border rounded-lg px-6 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:bg-gray-200 dark:focus:border-blue-800 focus:ring-blue-800 focus:outline-none focus:ring focus:ring-opacity-40">Buyer</button>
-                                <button type="button"
-                                    class="block w-full py-3 text-gray-700 border rounded-lg px-6 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:bg-gray-200 dark:focus:border-blue-800 focus:ring-blue-800 focus:outline-none focus:ring focus:ring-opacity-40">Seller</button>
+                                <button type="button" @click="handleAccountType('Buyer')" ref="buyer"
+                                    class="block w-full py-3 text-gray-700 border rounded-lg px-6 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600">Buyer</button>
+                                <button type="button" @click="handleAccountType('Seller')" ref="seller"
+                                    class="block w-full py-3 text-gray-700 border rounded-lg px-6 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600">Seller</button>
                             </div>
                         </div>
 
@@ -103,7 +103,7 @@
                                 </svg>
                             </span>
 
-                            <input type="email"
+                            <input type="text" v-model="email" ref="email"
                                 class="block w-full py-3 text-gray-700 bg-white border rounded-lg px-11 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
                                 placeholder="Email address">
                         </div>
@@ -118,7 +118,7 @@
                                         d="M11 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h6zM5 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H5z" />
                                 </svg>
                             </span>
-                            <input ref="phone" style="width:450px" id="phone" type="tel" name="phone"
+                            <input style="width:450px" id="phone" type="tel" name="phone" v-model="phone" ref="phone" 
                                 class="block px-10 py-3 text-gray-700 bg-white border rounded-lg dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
                                 placeholder="Phone Number">
                         </div>
@@ -162,6 +162,7 @@
 
 
                         <!-- !Repassword -->
+
                         <div class="relative flex items-center mt-4">
                             <input :type="showRepassword ? 'text' : 'password'" v-model="repassword" @input="checkPassword" ref="repassword"
                                 class="block w-full px-10 py-3 pr-12 text-gray-700 bg-white border rounded-lg dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
@@ -271,7 +272,7 @@
                         <!-- !Sign up button and login link -->
                         <div class="mt-6 mb-5">
                             <button 
-                                class="w-full px-6 py-3 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-blue-500 rounded-lg focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-50 disabled:opacity-75" :disabled="Object.keys(this.validationResult).length!=6">
+                                class="w-full px-6 py-3 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-blue-500 rounded-lg focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-50 disabled:opacity-75">
                                 Sign Up
                             </button>
 
