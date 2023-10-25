@@ -18,6 +18,7 @@ var register_login = new Vue({
         type:null,
         validationResult:{},
         isAgree:false,
+        isRregisterLogin:null
     },
     methods: {
         toggleShowPassword(type=null){
@@ -35,6 +36,23 @@ var register_login = new Vue({
 
         getResult(e){
             e.preventDefault();
+        },
+
+        resetForm(){
+            Object.assign(this, { email: '', password: '' });
+        },
+
+
+        toggleLoginRegister(type){
+            this.resetForm()
+            this.isRregisterLogin=true ? type=='login' : this.isRregisterLogin=false
+        },
+
+        checkRegisterLoginType(){
+            const searched_path = "login";//Default
+            const current_path = `${window.location.pathname}`;
+            const regex = new RegExp(searched_path);
+            this.isRregisterLogin=true ? regex.test(current_path) : this.isRregisterLogin=false
         },
 
 
@@ -224,6 +242,7 @@ var register_login = new Vue({
     },
 
     mounted() {
+        this.checkRegisterLoginType()
         const phoneInputField = this.$refs.phone
         const phoneInput = window.intlTelInput(phoneInputField, {utilsScript:"https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",});
     },
