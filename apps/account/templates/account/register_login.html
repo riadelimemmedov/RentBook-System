@@ -311,12 +311,9 @@
                                 have read and accept the terms of the Membership Agreement</label>
                         </div>
 
-                        
-                        <!-- !Social media -->
-                        {% include "components/social_media.html" %}
 
                         <!-- !Sign up button and login link -->
-                        <div class="mt-6 mb-5">
+                        <div class="mt-6">
                             <button 
                                 class="w-full px-6 py-3 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-blue-500 rounded-lg focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-50 disabled:opacity-75">
                                 Sign Up
@@ -331,6 +328,18 @@
                     </form>
                 </div>
             </section>
+            
+
+            <!-- *Social media -->
+            <div class="container flex items-center justify-center px-6 mx-auto">
+                <div class="w-full max-w-md">
+                        {% include "components/social_media.html" %}
+                </div>
+            </div>
+
+
+                        
+
         </div>
     {% endblock content %}
 <!-- *Child Component -->
