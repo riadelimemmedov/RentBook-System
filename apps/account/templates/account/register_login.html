@@ -47,7 +47,7 @@
             <!-- *Login -->
             <section class="dark:bg-gray-900" v-show="isRregisterLogin">
                 <div class="container flex items-center justify-center mt-2 px-6 mx-auto">
-                    <form class="w-full max-w-md" ref="login_form" id="login_form">
+                    <form class="w-full max-w-md" @submit.prevent="loginForm" ref="login_form" data_form_name="login">
     
                             <!-- !Email -->
                             <div class="relative flex items-center mt-6">
@@ -59,14 +59,14 @@
                                     </svg>
                                 </span>
 
-                                <input type="text" v-model="email" ref="email"
+                                <input type="text" v-model="email" ref="login_email"
                                     class="block w-full py-3 text-gray-700 bg-white border rounded-lg px-11 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
                                     placeholder="Email address">
                             </div>
 
                             <!-- !Password -->
                             <div class="relative flex items-center mt-4">
-                                <input :type="showPassword ? 'text' : 'password'" v-model="password" @input="checkPassword" ref="password"
+                                <input :type="showPassword ? 'text' : 'password'" v-model="password" @input="checkPassword" ref="login_password"
                                     class="block w-full px-10 py-3 pr-12 text-gray-700 bg-white border rounded-lg dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
                                     placeholder="Password">
                                 
@@ -122,7 +122,7 @@
             <!-- *Register -->
             <section class="dark:bg-gray-900" v-show="!isRregisterLogin">
                 <div class="container flex items-center justify-center mt-2 px-6 mx-auto">
-                    <form class="w-full max-w-md"  @submit.prevent="registerForm" ref="register_form">
+                    <form class="w-full max-w-md"  @submit.prevent="registerForm" ref="register_form" data_form_name="register">
                         
                         <div class="relative flex items-center mt-6">
                             <div class="grid grid-cols-6 w-full px-6 py-3 text-sm font-medium tracking-wide rounded-lg"
@@ -189,7 +189,7 @@
                                 </svg>
                             </span>
 
-                            <input type="text" v-model="email" ref="email"
+                            <input type="text" v-model="email" ref="register_email"
                                 class="block w-full py-3 text-gray-700 bg-white border rounded-lg px-11 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
                                 placeholder="Email address">
                         </div>
@@ -212,7 +212,7 @@
 
                         <!-- !Password -->
                         <div class="relative flex items-center mt-4">
-                            <input :type="showPassword ? 'text' : 'password'" v-model="password" @input="checkPassword" ref="password"
+                            <input :type="showPassword ? 'text' : 'password'" v-model="password" @input="checkPassword" ref="register_password"
                                 class="block w-full px-10 py-3 pr-12 text-gray-700 bg-white border rounded-lg dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
                                 placeholder="Password">
                             

@@ -42,6 +42,10 @@ var register_login = new Vue({
             Object.assign(this, { email: '', password: '' });
         },
 
+        checkIsNull(input_field_value){
+            console.log('Input value ', input_field_value);
+            return input_field_value !== '';
+        },
 
         toggleLoginRegister(type){
             this.resetForm()
@@ -70,13 +74,14 @@ var register_login = new Vue({
             }
         },
 
-        isValidEmail(){
+        isValidEmail(event_name=null){
+            console.log('Event for email ', event_name)
             if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.email)){
-                this.$refs.email.classList.add('border-danger')
+                event_name === 'login' ? this.$refs.login_email.classList.add('border-danger') : event_name === 'register' ? this.$refs.register_email.classList.add('border-danger') : null;
                 return false;
-            }
+            }   
             else{
-                this.$refs.email.classList.remove('border-danger')
+                event_name === 'login' ? this.$refs.login_email.classList.remove('border-danger') : event_name === 'register' ? this.$refs.register_email.classList.remove('border-danger') : null
                 return true;
             }
             
@@ -114,11 +119,11 @@ var register_login = new Vue({
 
         validatePasswordField(){
             if(Object.keys(this.validationResult).length!=6){
-                [this.$refs.password, this.$refs.repassword].forEach(ref => ref.classList.add('border-danger'))
+                [this.$refs.register_password, this.$refs.repassword].forEach(ref => ref.classList.add('border-danger'))
                 return false
             }
             else{
-                [this.$refs.password, this.$refs.repassword].forEach(ref => ref.classList.remove('border-danger'))
+                [this.$refs.register_password, this.$refs.repassword].forEach(ref => ref.classList.remove('border-danger'))
                 return true
             }
         },
@@ -134,8 +139,8 @@ var register_login = new Vue({
             }
         },
 
-        validateForm(){
-            const isValidEmail = this.isValidEmail()
+        validateRegisterForm(event_name=null){
+            const isValidEmail = this.isValidEmail(event_name)
             const isValidPhoneNumber = this.isValidPhoneNumber()
             const isValidFirstLastName = this.isValidFirstLastName({"first_name":this.first_name,"last_name":this.last_name}) 
             const isValidPassword = this.validatePasswordField()
@@ -146,8 +151,8 @@ var register_login = new Vue({
 
         registerForm(e){
             e.preventDefault()
-            const isValidForm = this.validateForm()
-            console.log('Is valid form ', isValidForm) 
+            const isValidRegisterForm = this.validateRegisterForm(e.target.getAttribute('data_form_name'))
+            console.log('Is valid form ', isValidRegisterForm) 
         },
 
         handleGender(type) {
@@ -172,6 +177,22 @@ var register_login = new Vue({
                 this.$refs.seller.classList.add('shadow-lg','bg-body');
             }
             this.account_type = type
+        },
+
+
+        validateLoginForm(event){
+            if(this.checkIsNull(this.password) && this.isValidEmail(event.target.getAttribute('data_form_name'))){
+                this.$refs.login_password.classList.remove('border-danger')
+            }
+            else{
+                this.$refs.login_password.classList.add('border-danger')
+            }
+        },
+
+        loginForm(e){
+            e.preventDefault()
+            const isValidLoginForm = this.validateLoginForm(e)
+            console.log('Is validate login form ', isValidLoginForm)
         }
     },
 
