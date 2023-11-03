@@ -43,6 +43,8 @@
                     </div>
                 </div>
             </section>
+
+            {{form.as_p}}
             
             <!-- *Login -->
             <section class="dark:bg-gray-900" v-show="isRregisterLogin">
@@ -124,8 +126,8 @@
             <!-- *Register -->
             <section class="dark:bg-gray-900" v-show="!isRregisterLogin">
                 <div class="container flex items-center justify-center mt-2 px-6 mx-auto">
-                    <form class="w-full max-w-md"  @submit.prevent="registerForm" ref="register_form" data_form_name="register">
-                        
+                    <form class="w-full max-w-md" method="POST" action="{% url 'account:register_account' %}" @submit="registerForm" ref="register_form" data_form_name="register">
+                        {% csrf_token %}
                         <div class="relative flex items-center mt-6">
                             <div class="grid grid-cols-6 w-full px-6 py-3 text-sm font-medium tracking-wide rounded-lg"
                                 style="background-color: #F2F0FA;">
@@ -140,10 +142,10 @@
 
                         <!-- !First Name and Last Name -->
                         <div class="relative items-center mt-8 grid grid-cols-2 gap-4">
-                            <input type="text" v-model="first_name" ref="first_name"
+                            <input type="text" v-model="first_name" ref="first_name" name="first_name"
                                 class="block w-full py-3 text-gray-700 bg-white border rounded-lg px-6 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
                                 placeholder="First Name">
-                            <input type="text" v-model="last_name" ref="last_name"
+                            <input type="text" v-model="last_name" ref="last_name" name="last_name"
                                 class="block w-full py-3 text-gray-700 bg-white border rounded-lg px-6 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
                                 placeholder="Last Name">
                         </div>
@@ -153,10 +155,11 @@
                         <div class="relative items-center mt-8">
                             <label class="text-gray-700 dark:text-gray-300 fw-bold mb-2 ml-1">Gender (Optional)</label>
                             <div class="flex gap-4">
-                                <button type="button" @click="handleGender('Female')" ref="female"
-                                    class="block w-full py-3 text-gray-700 border rounded-lg px-6 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600">Female</button>
-                                <button type="button"  @click="handleGender('Male')" ref="male"
-                                    class="block w-full py-3 text-gray-700 border rounded-lg px-6 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600">Male</button>
+                                <input type="text" class="d-none" name="gender" ref="gender">
+                                <input type="button" @click="handleGender('Female')" ref="female" name="gender_female" 
+                                    class="block w-full py-3 text-gray-700 border rounded-lg px-6 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600" value="Female">
+                                <input type="button"  @click="handleGender('Male')" ref="male" name="gender_male"
+                                    class="block w-full py-3 text-gray-700 border rounded-lg px-6 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600" value="Male">
                             </div>
                         </div>
 
@@ -164,10 +167,11 @@
                         <div class="relative items-center mt-8">
                             <label class="text-gray-700 dark:text-gray-300 fw-bold mb-2 ml-1">Account Type (Optional)</label>
                             <div class="flex gap-4">
-                                <button type="button" @click="handleAccountType('Buyer')" ref="buyer"
-                                    class="block w-full py-3 text-gray-700 border rounded-lg px-6 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600">Buyer</button>
-                                <button type="button" @click="handleAccountType('Seller')" ref="seller"
-                                    class="block w-full py-3 text-gray-700 border rounded-lg px-6 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600">Seller</button>
+                                <input type="text" class="d-none" name="account_type" ref="account_type">
+                                <input type="button" @click="handleAccountType('Buyer')" ref="buyer" name="account_buyer"
+                                    class="block w-full py-3 text-gray-700 border rounded-lg px-6 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600" value="Buyer">
+                                <input type="button" @click="handleAccountType('Seller')" ref="seller" name="account_seller"
+                                    class="block w-full py-3 text-gray-700 border rounded-lg px-6 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600" value="Seller">
                             </div>
                         </div>
 
@@ -191,7 +195,7 @@
                                 </svg>
                             </span>
 
-                            <input type="text" v-model="email" ref="register_email"
+                            <input type="text" v-model="email" ref="register_email" name="email"
                                 class="block w-full py-3 text-gray-700 bg-white border rounded-lg px-11 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
                                 placeholder="Email address">
                         </div>
@@ -214,7 +218,7 @@
 
                         <!-- !Password -->
                         <div class="relative flex items-center mt-4">
-                            <input :type="showPassword ? 'text' : 'password'" v-model="password" @input="checkPassword" ref="register_password"
+                            <input :type="showPassword ? 'text' : 'password'" v-model="password" @input="checkPassword" ref="register_password" name="password"
                                 class="block w-full px-10 py-3 pr-12 text-gray-700 bg-white border rounded-lg dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
                                 placeholder="Password">
                             

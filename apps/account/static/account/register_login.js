@@ -150,7 +150,13 @@ var register_login = new Vue({
 
         registerForm(e) {
             const isValidRegisterForm = this.validateRegisterForm(e.target.getAttribute('data_form_name'))
-            console.log('Is valid form ', isValidRegisterForm)
+            if(isValidRegisterForm==false) {
+                e.preventDefault()
+            }
+            else{
+                this.$refs.gender.value = this.gender
+                this.$refs.account_type.value = this.account_type
+            }
         },
 
         handleGender(type) {

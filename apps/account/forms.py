@@ -17,7 +17,23 @@ from .models import Account
 
 
 #*AccountForm
-class AccountForm(forms.ModelForm):        
+class AccountForm(forms.ModelForm):
+    GENDER_CHOICES = [
+        ('Female', 'Female'),
+        ('Male', 'Male'),
+        ]
+    
+    ACCOUNT_TYPE_CHOICES = [
+        ('Buyer','Buyer'),
+        ('Seller','Seller')
+    ]
+    
+    gender = forms.CharField(widget=forms.TextInput())
+    account_type = forms.CharField(widget=forms.TextInput())
+    class Meta:
+        model = Account
+        fields = ['first_name','last_name','gender','account_type','email','phone','password']
+        
     def clean_email(self):
         email = self.cleaned_data.get('email')
         if re.match(domain_pattern,email) is None:
