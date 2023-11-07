@@ -1,9 +1,10 @@
-from pathlib import Path
 import os
+from pathlib import Path
 from decouple import config
 
-
+from django.contrib.messages import constants as messages
 from django.utils.translation import gettext_lazy as _
+
 
 #!Your everywhere service name
 SITE_NAME = ""  # Domain Name
@@ -202,3 +203,8 @@ JET_THEMES = [
     {"theme": "light-gray", "color": "#222", "title": "Light Gray"},
 ]
 
+
+#!MESSAGE_TAGS
+MESSAGE_TAGS = {
+    messages.ERROR: 'danger',
+}
