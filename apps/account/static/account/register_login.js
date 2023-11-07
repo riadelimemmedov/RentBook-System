@@ -209,6 +209,25 @@ var register_login = new Vue({
         loginForm(e) {
             const isValidLoginForm = this.validateLoginForm(e)
             if (isValidLoginForm) {
+                //Send ajax request to login api
+                $.ajax({
+                    url: 'http://127.0.0.1:8000/account/login/',
+                    type: 'POST',
+                    dataType: 'json',  // If you expect a JSON response
+                    data: {
+                        email: this.email,
+                        password: this.password
+                    },
+                    success: function(response) {
+                        console.log('Aeeeee')
+                      // Handle the successful response
+                        console.log(response);
+                    },
+                    error: function(xhr, status, error) {
+                      // Handle the error
+                        console.log(error);
+                    }
+                });
                 this.is_valid_login_form = true
             } else {
                 this.is_valid_login_form = false

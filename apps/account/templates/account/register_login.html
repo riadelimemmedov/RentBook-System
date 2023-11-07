@@ -43,8 +43,7 @@
                     </div>
                 </div>
             </section>
-
-            {{form.as_p}}
+            <!-- {{form.as_p}} -->
             
             <!-- *Login -->
             <section class="dark:bg-gray-900" v-show="isRregisterLogin">
@@ -121,6 +120,10 @@
                     </form>
                 </div>
             </section>
+
+
+            <!-- *Alerts component   -->
+            {% include "components/alerts.html" %}
 
 
             <!-- *Register -->
@@ -365,5 +368,13 @@
 
 <!-- !JavaScript -->
 {% block scripts %}
+    <!-- Vue -->
     <script src="{% static 'account/register_login.js' %}"></script>
+
+    <!-- Jquery -->
+    <script>
+        setTimeout(function(){
+            $('#alert_message').fadeOut('slow')
+        },5000)
+    </script>
 {% endblock scripts %}
