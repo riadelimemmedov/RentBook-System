@@ -1,0 +1,18 @@
+{% if messages %}
+    {% for message in messages %}
+        <section class="dark:bg-gray-900" v-show="!isRregisterLogin" id="alert_message">
+            <div class="container flex items-center justify-center mt-2 px-6 mx-auto">
+                <div class="w-full max-w-md">
+                    <div class="relative flex items-center mt-4">
+                        <div {% if message.tags %} class="alert alert-{{message.tags}} block w-full py-3" {% endif %} role="alert">
+                            <span class="font-medium">
+                                {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %} Important : {% endif %}
+                                {{message}}
+                            </span> 
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    {% endfor %}
+{% endif %}
