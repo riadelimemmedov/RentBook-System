@@ -4,6 +4,7 @@ from django.shortcuts import render,get_object_or_404,redirect
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import login,authenticate,logout
 from django.contrib import messages
+from django.http import JsonResponse
 
 
 #!Models,Forms and Serializer classes
@@ -50,13 +51,16 @@ def register_account(request):
 #?login_account
 @csrf_exempt
 def login_account(request):
-    if request.method == 'POST':
-        raw_data = json.loads(request.body.decode('utf-8'))
-        # account = authenticate(email="tural@mail.ru",password="c#11aaa!A")
-        # if account is not None:
-        #     print('Accout found')
-        #     login(request,account)
-        #     return redirect('home')
+    if request.method == 'POST' and request.POST.get('csrf') != '':
+        email = request.POST['email']
+        password = request.POST['password']
+        
+        user = authenticate(email=email,password=password)
+        if user is not None:
+            login(request,user)
+            return JsonResponse({'message':'Logged in successfully','isLogin':'True'})
+        else:
+            return JsonResponse({'message':'Fail','isLogin':'False'})            
     return render(request,"account/register_login.html",context={})
 
 

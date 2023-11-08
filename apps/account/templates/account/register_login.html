@@ -48,7 +48,7 @@
             <!-- *Login -->
             <section class="dark:bg-gray-900" v-show="isRregisterLogin">
                 <div class="container flex items-center justify-center mt-2 px-6 mx-auto">
-                    <form class="w-full max-w-md" method="POST" action="{% url 'account:login_account' %}" @submit="loginForm" ref="login_form" data_form_name="login">
+                    <form class="w-full max-w-md" method="POST" action="{% url 'account:login_account' %}" @submit.prevent="loginForm" ref="login_form" data_form_name="login">
                             {% csrf_token %}
                             <!-- !Email -->
                             <div class="relative flex items-center mt-6">

@@ -208,22 +208,27 @@ var register_login = new Vue({
 
         loginForm(e) {
             const isValidLoginForm = this.validateLoginForm(e)
+            const csrf = document.getElementsByName('csrfmiddlewaretoken')[0].value
             if (isValidLoginForm) {
                 //Send ajax request to login api
                 $.ajax({
                     url: 'http://127.0.0.1:8000/account/login/',
                     type: 'POST',
-                    dataType: 'json',  // If you expect a JSON response
                     data: {
                         email: this.email,
-                        password: this.password
+                        password: this.password,
+                        csrf:csrf
                     },
                     success: function(response) {
-                        console.log('Aeeeee')
-                      // Handle the successful response
-                        console.log(response);
+                        console.log('Aeeee ', response.isLogin);
+                        if(response.isLogin=='True'){
+                            window.location.href = 'http://127.0.0.1:8000/'
+                        }
+                        else if(response.isLogin=='False'){
+                            window.location.href = "http://127.0.0.1:8000/account/login/"
+                        }
                     },
-                    error: function(xhr, status, error) {
+                    error: function(error) {
                       // Handle the error
                         console.log(error);
                     }
