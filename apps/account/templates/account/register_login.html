@@ -373,8 +373,11 @@
 
     <!-- Jquery -->
     <script>
+        let redirected_url = window.location.href.replace('register','login')
         setTimeout(function(){
-            $('#alert_message').fadeOut('slow')
+            $('#alert_message').fadeOut('slow',()=>{
+                window.location.href=`${redirected_url}`
+            })
         },5000)
     </script>
 {% endblock scripts %}

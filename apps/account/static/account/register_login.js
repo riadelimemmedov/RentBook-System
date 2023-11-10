@@ -150,6 +150,7 @@ var register_login = new Vue({
 
         registerForm(e) {
             const isValidRegisterForm = this.validateRegisterForm(e.target.getAttribute('data_form_name'))
+            const register_url = this.getUrlForAuthentication('register')
             if (isValidRegisterForm == false) {
                 e.preventDefault()
             } else {
@@ -205,32 +206,32 @@ var register_login = new Vue({
             return isPasswordValid && isEmailValid;
         },
 
-
         loginForm(e) {
             const isValidLoginForm = this.validateLoginForm(e)
             const csrf = document.getElementsByName('csrfmiddlewaretoken')[0].value
+            let login_url = this.getUrlForAuthentication('login')
+
+
             if (isValidLoginForm) {
                 //Send ajax request to login api
+                const self = this
                 $.ajax({
-                    url: 'http://127.0.0.1:8000/account/login/',
+                    url: login_url,
                     type: 'POST',
                     data: {
                         email: this.email,
                         password: this.password,
-                        csrf:csrf
+                        csrf: csrf
                     },
-                    success: function(response) {
-                        console.log('Aeeee ', response.isLogin);
-                        if(response.isLogin=='True'){
-                            window.location.href = 'http://127.0.0.1:8000/'
-                        }
-                        else if(response.isLogin=='False'){
-                            window.location.href = "http://127.0.0.1:8000/account/login/"
-                        }
+                    success: function (response) {
+                        self.throwAlertMessage('success', 'Signed in successfully')
+                        setTimeout(() => {
+                            response.isLogin === 'True' ? window.location.href = '/' : window.location.reload();
+                        }, 3000);
                     },
-                    error: function(error) {
-                      // Handle the error
-                        console.log(error);
+                    error: function (error) {
+                        // Handle the error
+                        console.log('Error when try to login ', error);
                     }
                 });
                 this.is_valid_login_form = true
@@ -238,7 +239,34 @@ var register_login = new Vue({
                 this.is_valid_login_form = false
                 e.preventDefault()
             }
-        }
+        },
+
+
+        getUrlForAuthentication(searched_url_keyword = null) {
+            if (searched_url_keyword == 'login') {
+                return window.location.href.includes('login') ? window.location.href : window.location.href.replace('register', 'login')
+            } else if (searched_url_keyword == 'register') {
+                return window.location.href.includes('register') ? window.location.href : window.location.href.replace('login', 'register')
+            }
+        },
+
+        throwAlertMessage(icon, title) {
+            const Toast = Swal.mixin({
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                }
+            });
+            Toast.fire({
+                icon: `${icon}`,
+                title: `${title}`
+            });
+        },
     },
 
     computed: {
