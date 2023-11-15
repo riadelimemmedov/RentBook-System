@@ -224,9 +224,18 @@ var register_login = new Vue({
                         csrf: csrf
                     },
                     success: function (response) {
-                        self.throwAlertMessage('success', 'Signed in successfully')
+                        self.throwAlertMessage(
+                            response.isLogin === 'True' ? {
+                                icon: response.icon,
+                                title: response.message
+                            } : {
+                                icon: response.icon,
+                                title: response.message
+                            },
+                            'Please try again...'
+                        );
                         setTimeout(() => {
-                            response.isLogin === 'True' ? window.location.href = '/' : window.location.reload();
+                            response.isLogin === 'True' ? window.location.href = '/' : null;
                         }, 3000);
                     },
                     error: function (error) {
@@ -250,7 +259,7 @@ var register_login = new Vue({
             }
         },
 
-        throwAlertMessage(icon, title) {
+        throwAlertMessage(alert_object) {
             const Toast = Swal.mixin({
                 toast: true,
                 position: "top-end",
@@ -263,8 +272,8 @@ var register_login = new Vue({
                 }
             });
             Toast.fire({
-                icon: `${icon}`,
-                title: `${title}`
+                icon: `${alert_object.icon}`,
+                title: `${alert_object.title}`
             });
         },
     },

@@ -19,6 +19,7 @@ import time
 
 #?register_account
 def register_account(request):
+    #If user email,phone already exists database return client to message
     if request.method == 'POST':
             form = AccountForm(request.POST or None)
             first_name = request.POST['first_name']
@@ -30,6 +31,7 @@ def register_account(request):
             password = request.POST['password']
             
             user = Account.objects.create_user(first_name=first_name,last_name=last_name,gender=gender,account_type=account_type,email=email,phone=phone,password=password)
+            print('Creating user is ', user)
             user.save()
             messages.success(request,'Registration successfull.')
             return redirect(request.path)
@@ -43,6 +45,7 @@ def register_account(request):
 #?login_account
 @csrf_exempt
 def login_account(request):
+    #If user or password incorrect return message to client
     if request.method == 'POST' and request.POST.get('csrf') != '':
         email = request.POST['email']
         password = request.POST['password']
@@ -50,9 +53,9 @@ def login_account(request):
         user = authenticate(email=email,password=password)
         if user is not None:
             login(request,user)
-            return JsonResponse({'message':'Logged in successfully','isLogin':'True'})
+            return JsonResponse({'message':'Signed in successfully','isLogin':'True','icon':'success'})
         else:
-            return JsonResponse({'message':'Fail','isLogin':'False'})            
+            return JsonResponse({'message':'Email or Password incorrect','isLogin':'False','icon':'error'})            
     return render(request,"account/register_login.html",context={})
 
 
