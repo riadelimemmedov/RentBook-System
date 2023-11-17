@@ -45,19 +45,29 @@ DEFAULT_APPS = [
 ]
 
 #!Third Part App
-THIRD_PARTY_APPS = ["django_cleanup","ckeditor","django_extensions",'django_countries','import_export','tailwind','django_browser_reload','widget_tweaks','djmoney']
+THIRD_PARTY_APPS = [
+    "django_cleanup",
+    "ckeditor",
+    "django_extensions",
+    "django_countries",
+    "import_export",
+    "tailwind",
+    "django_browser_reload",
+    "widget_tweaks",
+    "djmoney",
+]
 
 #!Created Apps
 CREATED_APPS = [
-    'theme',
-    'abstract',
-    'apps.author',
-    'apps.book',
-    'apps.customer',
-    'apps.publisher',
-    'apps.rental',
-    'apps.cart',
-    'apps.account',
+    "theme",
+    "abstract",
+    "apps.author",
+    "apps.book",
+    "apps.customer",
+    "apps.publisher",
+    "apps.rental",
+    "apps.cart",
+    "apps.account",
 ]
 
 #!Installed Apps
@@ -65,10 +75,10 @@ INSTALLED_APPS = DEFAULT_APPS + CREATED_APPS + THIRD_PARTY_APPS
 
 
 #!AUTH_USER_MODEL
-AUTH_USER_MODEL = 'account.Account'
+AUTH_USER_MODEL = "account.Account"
 
 
-TAILWIND_APP_NAME = 'theme'
+TAILWIND_APP_NAME = "theme"
 INTERNAL_IPS = [
     "127.0.0.1",
 ]
@@ -84,7 +94,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "apps.account.middleware.RedirectAuthenticatedMiddleware"
+    "apps.account.middleware.RedirectAuthenticatedMiddleware",
 ]
 
 #!Root UrlConf
@@ -94,7 +104,7 @@ ROOT_URLCONF = "config.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [os.path.join(BASE_DIR,'templates')],
+        "DIRS": [os.path.join(BASE_DIR, "templates")],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -142,7 +152,7 @@ LANGUAGES = [
 TIME_ZONE = "Asia/Baku"
 USE_I18N = True  # A boolean that specifies whether Django's translation system should be enabled
 # USE_L10N = True #Numbers and dates using the format of the current locale.
-USE_TZ = True # A boolean indicating whether time zones are used in the application.
+USE_TZ = True  # A boolean indicating whether time zones are used in the application.
 
 
 #!DATE_INPUT_FORMATS
@@ -159,10 +169,10 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
 #!Static Files
-ENVIRONMENT = config('ENVIRONMENT')
-if ENVIRONMENT == 'LOCAL' or ENVIRONMENT == 'PROD':
+ENVIRONMENT = config("ENVIRONMENT")
+if ENVIRONMENT == "LOCAL" or ENVIRONMENT == "PROD":
     # STATICFILES_DIRS = [os.path.join(BASE_DIR,'static')]
-    STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+    STATIC_ROOT = os.path.join(BASE_DIR, "static")
 # else:#if site deployed to production
 #     STATIC_ROOT = os.path.join(BASE_DIR,'static')#for production
 
@@ -173,18 +183,19 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 
 #!Ckeditor Configuration
-CKEDITOR_UPLOAD_PATH = 'uploads/'
+CKEDITOR_UPLOAD_PATH = "uploads/"
 CKEDITOR_IMAGE_BACKEND = "pillow"
-CKEDITOR_JQUERY_URL = '//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js'
+CKEDITOR_JQUERY_URL = "//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"
 CKEDITOR_CONFIGS = {
-    'default':
-        {
-            'toolbar': 'full',
-            'width': 'auto',
-            'extraPlugins': ','.join([
-                'codesnippet',
-            ]),
-        },
+    "default": {
+        "toolbar": "full",
+        "width": "auto",
+        "extraPlugins": ",".join(
+            [
+                "codesnippet",
+            ]
+        ),
+    },
 }
 
 
@@ -206,5 +217,5 @@ JET_THEMES = [
 
 #!MESSAGE_TAGS
 MESSAGE_TAGS = {
-    messages.ERROR: 'danger',
+    messages.ERROR: "danger",
 }

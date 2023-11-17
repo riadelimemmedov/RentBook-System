@@ -28,7 +28,6 @@ from abstract.constants import AppName
 from abstract.views import *
 
 
-
 # *Admin Site Configuration
 admin.site.site_header = _("RentBook Admin")  # login page
 admin.site.site_title = _("RentBook Admin User")  # html <title> tag
@@ -43,7 +42,7 @@ if not settings.APP_NAME or settings.APP_NAME not in [app.value for app in AppNa
 urls_admin = [
     path("jet/", include("jet.urls", "jet")),
     path("jet/dashboard/", include("jet.dashboard.urls", "jet-dashboard")),
-    path("ckeditor/", include("ckeditor_uploader.urls")),  
+    path("ckeditor/", include("ckeditor_uploader.urls")),
 ]
 
 if settings.APP_NAME == AppName.ADMIN.name:
@@ -51,16 +50,16 @@ if settings.APP_NAME == AppName.ADMIN.name:
 else:
     urlpatterns += [
         path("__reload__/", include("django_browser_reload.urls")),
-        path('',HomeView.as_view(),name='home'),
-        path('dashboard/', DashboardView.as_view(),name='dashboard'),
-        path('about/',AboutView.as_view(),name='about'),
-        path('change/',changeTheme,name='change'),
-        path("author/",include('apps.author.urls',namespace='author')),
-        path("book/",include('apps.book.urls',namespace='book')),                                       
-        path("customer/",include('apps.customer.urls',namespace='customer')),                                       
-        path("publisher/",include('apps.publisher.urls',namespace='publisher')),
-        path("rental/",include('apps.rental.urls',namespace='rental')),   
-        path("account/",include('apps.account.urls',namespace='account'))    
+        path("", HomeView.as_view(), name="home"),
+        path("dashboard/", DashboardView.as_view(), name="dashboard"),
+        path("about/", AboutView.as_view(), name="about"),
+        path("change/", changeTheme, name="change"),
+        path("author/", include("apps.author.urls", namespace="author")),
+        path("book/", include("apps.book.urls", namespace="book")),
+        path("customer/", include("apps.customer.urls", namespace="customer")),
+        path("publisher/", include("apps.publisher.urls", namespace="publisher")),
+        path("rental/", include("apps.rental.urls", namespace="rental")),
+        path("account/", include("apps.account.urls", namespace="account")),
     ]
     urlpatterns += urls_admin
 urlpatterns += i18n_patterns(path("admin/", admin.site.urls))
@@ -68,5 +67,5 @@ urlpatterns += i18n_patterns(path("admin/", admin.site.urls))
 
 # *Settings Debug
 if settings.DEBUG:
-    urlpatterns+=static(settings.STATIC_URL,document_root=settings.STATIC_ROOT)
-    urlpatterns+=static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

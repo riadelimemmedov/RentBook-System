@@ -224,16 +224,18 @@ var register_login = new Vue({
                         csrf: csrf
                     },
                     success: function (response) {
-                        self.throwAlertMessage(
-                            response.isLogin === 'True' ? {
-                                icon: response.icon,
-                                title: response.message
-                            } : {
-                                icon: response.icon,
-                                title: response.message
-                            },
-                            'Please try again...'
-                        );
+                        setTimeout(() => {
+                            self.throwAlertMessage(
+                                response.isLogin === 'True' ? {
+                                    icon: response.icon,
+                                    title: response.message
+                                } : {
+                                    icon: response.icon,
+                                    title: response.message
+                                },
+                                'Please try again...'
+                            );
+                        }, 500)
                         setTimeout(() => {
                             response.isLogin === 'True' ? window.location.href = '/' : null;
                         }, 3000);
