@@ -1,0 +1,64 @@
+version: '3'
+
+services:
+
+  flower:
+    image: mher/flower
+    ports:
+      - "5555:5555" # meps to http://localhost:5555/
+    environment:
+      - CELERY_BROKER_URL=amqp://guest:guest@rabbitmq:5672/
+
+  rabbitmq:
+    build: 
+      context: ./
+    image: rabbitmq:management
+    container_name: rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_VHOST: "/"
+    ports:
+      - "5672:5672" #maps to rabbitmq port
+      - "15672:15672" #maps the management plugins's web interface port => http://localhost:15672,   guest/guest
+
+
+  redis:
+    container_name: redis
+    image: redis:alpine
+
+
+  django:
+    build: 
+      context: ./
+    container_name: django
+    command: sh -c "python manage.py runserver 0.0.0.0:8000 && python manage.py tailwind start"
+    ports:
+      - "8001:8000" #http://localhost:8001/
+    volumes:
+      - .:/usr/src/app/
+    env_file:
+      - .env
+    depends_on:
+      - rabbitmq
+      - redis
+
+  celery:
+    container_name: celery
+    build: 
+      context: ./
+    command: celery -A config worker --pool=solo -l info
+    volumes:
+      - .:/usr/src/app/
+    depends_on:
+      - rabbitmq
+      - redis
+      - django
+        
+  celery-beat:
+    container_name: celery-beat
+    build: 
+        context: ./
+    command: celery -A config beat -l info
+    volumes:
+      - .:/usr/src/app/
+    depends_on:
+      - redis
