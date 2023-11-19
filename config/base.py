@@ -55,6 +55,8 @@ THIRD_PARTY_APPS = [
     "django_browser_reload",
     "widget_tweaks",
     "djmoney",
+    "django_celery_beat",  # This extension enables you to store the periodic task schedule in the database, Defined Name At Admin Panel => Periodic Tasks
+    "django_celery_results",  # This extension enables you to store Celery task results using the Django ORM.This extension logging celery tasks and after saved all data in database
 ]
 
 #!Created Apps
@@ -219,3 +221,25 @@ JET_THEMES = [
 MESSAGE_TAGS = {
     messages.ERROR: "danger",
 }
+
+
+#!Celery
+
+# Localhost
+# CELERY_BROKER_URL = 'redis://localhost:6379'
+# CELERY_RESULT_BACKEND = "redis://localhost:6379"
+
+# Docker
+CELERY_BROKER_URL = config(
+    "CELERY_BROKER_URL", "amqp://guest:guest@rabbitmq:5672/"
+)  # Second 'redis' keyword refer container name of redis
+CELERY_RESULT_BACKEND = config("CELERY_RESULT_BACKEND", "redis://redis:6379")
+
+
+#!Django Celery Results Configuration
+CELERY_RESULT_BACKEND = "django-db"  # => django_celery_results
+
+#!Django Celery Beat Configuration
+CELERY_BEAT_SCHEDULER = (
+    "django_celery_beat.schedulers.DatabaseScheduler"  # => django_celery_beat
+)
