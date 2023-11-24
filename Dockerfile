@@ -9,9 +9,9 @@ WORKDIR /usr/src/app/
 
 #?Set environment variables
 #Prevent Python from writing .pyc file
-ENV PYTHONDONTWRITEBYTECODE 1 
+# ENV PYTHONDONTWRITEBYTECODE 1 
 #Ensure python output is send directly to the terminal without buffering
-ENV PYTHONUNBUFFERED 1
+# ENV PYTHONUNBUFFERED 1
 
 
 

@@ -55,7 +55,11 @@ def createUser(first_name, last_name, gender, account_type, email, phone, passwo
             password=password,
         )
         user.save()
-        return {"message_type": "success", "message_text": "Registration successfull."}
+        return {
+            "message_type": "success",
+            "message_text": "Registration successfull.",
+            "user": user,
+        }
     else:
         return is_exists_account
 

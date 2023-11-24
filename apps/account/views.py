@@ -5,6 +5,7 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.http import JsonResponse
+from django.contrib.sites.shortcuts import get_current_site
 
 
 #!Models,Forms and Serializer classes
@@ -15,13 +16,19 @@ from .forms import AccountForm
 #!Python modules and function
 import time
 
+
+#!Helpers method
 from config.helpers import createUser
+
+#!Tasks
+from tasks.ex_activate_account import activateAccount
 
 # Create your views here.
 
 
 # ?register_account
 def register_account(request):
+    current_site = get_current_site(request)
     # If user email,phone already exists database return client to message
     if request.method == "POST":
         form = AccountForm(request.POST or None)
@@ -45,6 +52,9 @@ def register_account(request):
         elif created_user.get("message_type") == "success":
             messages.success(request, f"{created_user.get('message_text')}")
             time.sleep(5)
+            user = created_user.get("user")
+            result = activateAccount.delay(pk=user.pk, domain=current_site.domain)
+            print("Activate result ", result)
             return redirect("account:login_account")
     else:
         form = AccountForm()
