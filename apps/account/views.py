@@ -1,3 +1,5 @@
+#
+
 #! Django function and methods
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.decorators.csrf import csrf_exempt
@@ -6,7 +8,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.http import JsonResponse
 from django.contrib.sites.shortcuts import get_current_site
-
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.contrib.auth.tokens import default_token_generator
 
 #!Models,Forms and Serializer classes
 from .models import Account
@@ -23,8 +26,9 @@ from config.helpers import createUser
 #!Tasks
 from tasks.ex_activate_account import activateAccount
 
-# Create your views here.
 
+
+# Create your views here.
 
 # ?register_account
 def register_account(request):
@@ -69,6 +73,7 @@ def login_account(request):
     if request.method == "POST" and request.POST.get("csrf") != "":
         email = request.POST["email"]
         password = request.POST["password"]
+        
 
         user = authenticate(email=email, password=password)
         if user is not None:
@@ -80,6 +85,8 @@ def login_account(request):
                     "icon": "success",
                 }
             )
+        elif user.is_active:
+            print('Please activate first user...')
         else:
             return JsonResponse(
                 {
@@ -97,3 +104,20 @@ def logout_account(request):
     logout(request)
     messages.add_message(request, messages.SUCCESS, "You are logged out.")
     return redirect("account:login_account")
+
+
+
+def activate_account(request,uidb64,token):
+    try:
+        uid = urlsafe_base64_decode(uidb64).decode()
+        account = Account._default_manager.get(pk=uid)
+    except(TypeError,ValueError,OverflowError,Account.DoesNotExist):
+        account = None
+    if account is not None and not default_token_generator.check_token(account,token):
+        account.is_active = True
+        account.save()
+        messages.add_message(request,messages.SUCCESS,'Congrulations! Your account is activated')
+        return redirect('account:login_account')
+    else:
+        messages.add_message(request,messages.ERROR,'Invalid activation link')
+        return redirect('account:register_account')

@@ -21,7 +21,11 @@ import apps
 def activateAccount(**kwargs):
     pk = kwargs.get("pk")
     domain = kwargs.get("domain")
-    account = apps.account.models.Account.objects.get(pk=pk)
+    account = apps.account.models.Account.objects.get(pk=pk)    
+
+    print('Ay blett doamin gelde aqqq ', domain)
+    
+    print('Token is celery ', default_token_generator.make_token(account))
 
     mail_subject = "Please activate your account!"
     message = render_to_string(

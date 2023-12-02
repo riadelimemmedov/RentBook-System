@@ -1,8 +1,10 @@
 {% autoescape off %}
     Hi, {{account.username}}
-    
-    Please click on below link to confirm your registeration
-    http//{{domain}}{% url 'account:activateLink' uidb64=uid token=token %}
+
+    {% block reset_link %}
+        http://{{ domain }}{% url 'account:activate_account' uidb64=uid token=token %}">
+    {% endblock %}
+
 
     If you think it's not you,please ignore this email
 
