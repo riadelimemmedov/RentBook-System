@@ -278,6 +278,10 @@ var register_login = new Vue({
                 title: `${alert_object.title}`
             });
         },
+
+        handleRegister(e) {
+            console.log('User clikc to buttton register')
+        }
     },
 
     computed: {

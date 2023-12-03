@@ -57,7 +57,7 @@ def createUser(first_name, last_name, gender, account_type, email, phone, passwo
         user.save()
         return {
             "message_type": "success",
-            "message_text": "Registration successfull.",
+            "message_text": "We have send activation link to gmail.Please activate.",
             "user": user,
         }
     else:

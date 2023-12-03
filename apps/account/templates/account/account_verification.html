@@ -1,8 +1,8 @@
 {% autoescape off %}
-    Hi, {{account.username}}
+    Hi, {{account.full_name}}
 
     {% block reset_link %}
-        http://{{ domain }}{% url 'account:activate_account' uidb64=uid token=token %}">
+        http://{{ domain }}{% url 'account:activate_account' uidb64=uid token=token %}"
     {% endblock %}
 
 

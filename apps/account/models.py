@@ -45,7 +45,7 @@ class MyAccountManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
         extra_fields.setdefault("is_staff", False)
         extra_fields.setdefault("is_superuser", False)
-        extra_fields.setdefault("is_active", False)
+        extra_fields.setdefault("is_active", True)
         return self._create_user(email, password, **extra_fields)
 
     def create_superuser(self, email, password=None, **extra_fields):
@@ -111,7 +111,7 @@ class Account(AbstractBaseUser, PermissionsMixin):
     )
     is_active = models.BooleanField(
         _("Active"),
-        default=False,
+        default=True,
         help_text=_(
             "Designates whether this user should be treated as active. Unselect this instead of deleting accounts."
         ),
@@ -137,7 +137,7 @@ class Account(AbstractBaseUser, PermissionsMixin):
         max_length=20,
         choices=Status.choices,
         null=True,
-        default=Status.choices[0][1],
+        default=Status.choices[1][0],
     )
     gender = models.CharField(
         _("Gender"), max_length=20, choices=Gender.choices, null=True, blank=True
@@ -162,7 +162,6 @@ class Account(AbstractBaseUser, PermissionsMixin):
         return f"{self.full_name}"
 
     def save(self, *args, **kwargs):
-        
         if not self.full_name:
             full_name = setFullName(self.first_name, self.last_name)
             ex = __class__.objects.filter(full_name=full_name).exists()

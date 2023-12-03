@@ -15,20 +15,19 @@ from django.contrib.auth.tokens import default_token_generator
 from .models import Account
 from .forms import AccountForm
 
-
 #!Python modules and function
 import time
 
-
 #!Helpers method
 from config.helpers import createUser
+from abstract.utils.account import throwMessage
 
 #!Tasks
 from tasks.ex_activate_account import activateAccount
 
 
-
 # Create your views here.
+
 
 # ?register_account
 def register_account(request):
@@ -54,15 +53,12 @@ def register_account(request):
             time.sleep(5)
             return redirect(request.path)
         elif created_user.get("message_type") == "success":
-            messages.success(request, f"{created_user.get('message_text')}")
-            time.sleep(5)
             user = created_user.get("user")
             result = activateAccount.delay(pk=user.pk, domain=current_site.domain)
-            print("Activate result ", result)
-            return redirect("account:login_account")
+            messages.success(request, f"{created_user.get('message_text')}")
+            time.sleep(5)
     else:
         form = AccountForm()
-
     return render(request, "account/register_login.html", context={"form": form})
 
 
@@ -73,28 +69,16 @@ def login_account(request):
     if request.method == "POST" and request.POST.get("csrf") != "":
         email = request.POST["email"]
         password = request.POST["password"]
-        
 
         user = authenticate(email=email, password=password)
-        if user is not None:
+
+        if user is not None and user.status == "ACTIVE":
             login(request, user)
-            return JsonResponse(
-                {
-                    "message": "Signed in successfully",
-                    "isLogin": "True",
-                    "icon": "success",
-                }
-            )
-        elif user.is_active:
-            print('Please activate first user...')
+            return JsonResponse(throwMessage("ACTIVE"), safe=False)
+        elif user is not None and user.status == "INACTIVE":
+            return JsonResponse(throwMessage("INACTIVE"), safe=False)
         else:
-            return JsonResponse(
-                {
-                    "message": "Email or Password incorrect",
-                    "isLogin": "False",
-                    "icon": "error",
-                }
-            )
+            return JsonResponse(throwMessage("INCORRECT"), safe=False)
     return render(request, "account/register_login.html", context={})
 
 
@@ -106,18 +90,20 @@ def logout_account(request):
     return redirect("account:login_account")
 
 
-
-def activate_account(request,uidb64,token):
+# ?activate_account
+def activate_account(request, uidb64, token):
     try:
         uid = urlsafe_base64_decode(uidb64).decode()
         account = Account._default_manager.get(pk=uid)
-    except(TypeError,ValueError,OverflowError,Account.DoesNotExist):
+    except (TypeError, ValueError, OverflowError, Account.DoesNotExist):
         account = None
-    if account is not None and not default_token_generator.check_token(account,token):
-        account.is_active = True
+    if account is not None and not default_token_generator.check_token(account, token):
+        account.status = "ACTIVE"
         account.save()
-        messages.add_message(request,messages.SUCCESS,'Congrulations! Your account is activated')
-        return redirect('account:login_account')
+        messages.add_message(
+            request, messages.SUCCESS, "Congrulations! Your account is activated"
+        )
+        return redirect("account:login_account")
     else:
-        messages.add_message(request,messages.ERROR,'Invalid activation link')
-        return redirect('account:register_account')
+        messages.add_message(request, messages.ERROR, "Invalid activation link")
+        return redirect("account:register_account")
