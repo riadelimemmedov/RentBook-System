@@ -183,7 +183,7 @@ class Book(TimeStampedModel):
         null=True,
         validators=[FileExtensionValidator(["png", "jpg", "jpeg"])],
     )
-    price = MoneyField(_("Price"), decimal_places=2, max_digits=8, null=True)
+    price = MoneyField(_("Price"), decimal_places=2, max_digits=8, null=True,default_currency='USD')
     discount_percentage = models.CharField(
         _("Discount"), max_length=100, blank=True, null=True
     )
