@@ -10,7 +10,6 @@ def redirect_inactive_users(view_func):
         if not request.user.is_authenticated and not request.user.is_active:
             return redirect(request.path)
         return view_func(request, *args, **kwargs)
-
     return wrapper
 
 
@@ -34,3 +33,10 @@ def throwMessage(message_name):
             "isLogin": "False",
             "icon": "error",
         }
+
+
+# ?setIsRememberMe
+def setIsRememberMe(is_remember, request):
+    if is_remember:
+        request.session.set_expiry(0)
+        request.session.modified = True
