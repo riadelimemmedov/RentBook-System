@@ -162,6 +162,8 @@ class Account(AbstractBaseUser, PermissionsMixin):
         return f"{self.full_name}"
 
     def save(self, *args, **kwargs):
+        if not self.photo:
+            self.photo = "account/default_account.png"
         if not self.full_name:
             full_name = setFullName(self.first_name, self.last_name)
             ex = __class__.objects.filter(full_name=full_name).exists()

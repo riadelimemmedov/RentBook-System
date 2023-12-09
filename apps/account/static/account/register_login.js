@@ -11,6 +11,7 @@ var register_login = new Vue({
         phone: null,
         password: null,
         repassword: null,
+        isRememberMe: false,
 
         //Other value
         showPassword: false,
@@ -21,7 +22,7 @@ var register_login = new Vue({
         isRregisterLogin: null,
 
         is_valid_login_form: false,
-        isValidRegisterForm: false
+        isValidRegisterForm: false,
     },
     methods: {
         toggleShowPassword(type = null) {
@@ -221,6 +222,7 @@ var register_login = new Vue({
                     data: {
                         email: this.email,
                         password: this.password,
+                        isRememberMe: String(this.isRememberMe),
                         csrf: csrf
                     },
                     success: function (response) {

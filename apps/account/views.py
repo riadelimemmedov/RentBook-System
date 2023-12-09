@@ -20,7 +20,7 @@ import time
 
 #!Helpers method
 from config.helpers import createUser
-from abstract.utils.account import throwMessage
+from abstract.utils.account import throwMessage, setIsRememberMe
 
 #!Tasks
 from tasks.ex_activate_account import activateAccount
@@ -69,6 +69,11 @@ def login_account(request):
     if request.method == "POST" and request.POST.get("csrf") != "":
         email = request.POST["email"]
         password = request.POST["password"]
+        isRememberMe = (
+            setIsRememberMe(True, request)
+            if request.POST["isRememberMe"] == "true"
+            else setIsRememberMe(False, request)
+        )
 
         user = authenticate(email=email, password=password)
 
