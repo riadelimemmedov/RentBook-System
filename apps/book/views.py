@@ -9,6 +9,7 @@ from django.views.generic import ListView, FormView
 from django.utils.html import strip_tags
 from django.core import serializers
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
+from django.db.models import Q
 
 
 #!Models,Forms and Serializer classes
@@ -82,7 +83,7 @@ class SearchedBooksListView(ListView):
     model = Book
     template_name = "book/searched_books.html"
     context_object_name = "books"
-    paginate_by = 2
+    paginate_by = 1
     books = None
 
     @classmethod

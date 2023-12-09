@@ -126,7 +126,7 @@ var book = new Vue({
         },
 
         parseObject(obj){
-            let parsed_obj = JSON.parse(obj.replace(/'/g, "\""));
+            let parsed_obj = JSON.parse(obj.replace(/'/g, null));
             return parsed_obj
         },
 

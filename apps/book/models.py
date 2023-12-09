@@ -191,7 +191,7 @@ class Book(TimeStampedModel):
         _("Book Id"), length=13, unique=True, blank=True, include_alpha=True, null=True
     )
     book_image = models.ImageField(
-        _("Image"),
+        _("Book Image"),
         upload_to="books",
         blank=True,
         null=True,
