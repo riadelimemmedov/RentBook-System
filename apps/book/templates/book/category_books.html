@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% load static tailwind_tags %}
+{% load widget_tweaks %}
+{% load static %}
+
+
+<!-- !Css -->
+{% block css %} {% endblock css %}
+
+
+<!-- !Title -->
+<title>{% block title %} Category Books {% endblock title %}</title>
+
+
+<!-- *Child Component -->
+    {% block content %}
+        <div id="category_books">
+            <h1>Hello Category Books</h1>
+        </div>
+    {% endblock content %}
+<!-- *Child Component -->
+
+
+<!-- !JavaScript -->
+{% block scripts %}
+    <script src="{% static 'book/category_books.js' %}"></script>
+{% endblock scripts %}

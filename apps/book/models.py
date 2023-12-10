@@ -1,5 +1,8 @@
+#
+
 #! Django function and methods
 from django.db import models
+from django.urls import reverse
 from django.core.validators import FileExtensionValidator
 from django.utils.translation import gettext_lazy as _
 from django.core.files import File
@@ -67,6 +70,15 @@ class CategoryBook(TimeStampedModel):
         db_index=True,
         blank=True,
     )
+    category_id = RandomCharField(
+        _("Category Id"),
+        length=24,
+        unique=True,
+        blank=True,
+        include_alpha=True,
+        null=True,
+        lowercase=True,
+    )
 
     class Meta:
         verbose_name = "Category Book"
@@ -77,6 +89,19 @@ class CategoryBook(TimeStampedModel):
 
     def category_count(self):
         return self.category_book.all().count()
+
+    def save(self, *args, **kwargs):
+        if self.category_id == "" or self.category_id == None:
+            category_id = RandomCharField.pre_save(
+                CategoryBook._meta.get_field("category_id"), self, True
+            )
+            super(CategoryBook, self).save(*args, **kwargs)
+
+    def get_absolute_url(self):
+        return reverse(
+            "book:category_books",
+            kwargs={"category_book_slug": self.category_book_slug},
+        )
 
 
 # *BookTitle
@@ -183,7 +208,9 @@ class Book(TimeStampedModel):
         null=True,
         validators=[FileExtensionValidator(["png", "jpg", "jpeg"])],
     )
-    price = MoneyField(_("Price"), decimal_places=2, max_digits=8, null=True,default_currency='USD')
+    price = MoneyField(
+        _("Price"), decimal_places=2, max_digits=8, null=True, default_currency="USD"
+    )
     discount_percentage = models.CharField(
         _("Discount"), max_length=100, blank=True, null=True
     )

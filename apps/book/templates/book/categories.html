@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% load static tailwind_tags %}
+{% load widget_tweaks %}
+{% load static %}
+
+
+
+<!-- !Css -->
+{% block css %} {% endblock css %}
+
+
+<!-- !Title -->
+<title>{% block title %} Categories {% endblock title %}</title>
+
+
+<!-- *Child Component -->
+    {% block content %}
+        <div id="category"> 
+            {% include "components/header.html" with title="Book Categories" description="List of all the book categories" is_form_available=False %}
+            <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 mb-4">
+                    <thead class="text-xs text-gray-700 uppercase dark:bg-gray-700 dark:text-gray-400">
+                        <tr class="border">
+                            <th scope="col" class="py-3 px-6">
+                                #
+                            </th>
+                            <th scope="col" class="py-3 px-6">
+                                Name
+                            </th>
+                            <th scope="col" class="py-3 px-6">
+                                Id
+                            </th>
+                            <th scope="col" class="py-3 px-6 text-left">
+                                Number of book
+                            </th>
+                            <th scope="col" class="py-3 px-6 text-center">
+                                Select
+                            </th>
+                        </tr>
+                    </thead>
+                <tbody>
+                    {% for category in categories %}
+                        <tr class="border-b dark:bg-gray-800 dark:border-gray-700">
+                            <td scope="row" class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                {{forloop.counter}}
+                            </td>
+                            <td class="py-4 px-6">
+                                {{category.category_book_name.capitalize}}
+                            </td>
+                            <td class="py-4 px-6">
+                                {{category.category_id}}
+                            </td>
+                            <td class="py-4 px-6">
+                                {{category.category_book.count}}
+                            </td>
+                            <td class="py-4 px-6">
+                                {% include "components/buttons/select_button.html" with href=category.get_absolute_url %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <!-- !Pagintion -->
+            {% include "components/pagination/pagination.html" %}
+
+        </div>
+    {% endblock content %}
+<!-- *Child Component -->
+
+
+<!-- !JavaScript -->
+{% block scripts %}
+    <script type="text/javascript" src="{% static 'book/categories.js' %}"></script>
+{% endblock scripts %}

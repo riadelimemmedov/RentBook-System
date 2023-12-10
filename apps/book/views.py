@@ -5,7 +5,7 @@ from django.db.models.query import QuerySet
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.http import HttpResponse, JsonResponse
-from django.views.generic import ListView, FormView
+from django.views.generic import ListView, DetailView, FormView
 from django.utils.html import strip_tags
 from django.core import serializers
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
@@ -13,7 +13,7 @@ from django.db.models import Q
 
 
 #!Models,Forms and Serializer classes
-from .models import Book, BookTitle
+from .models import Book, BookTitle, CategoryBook
 from .forms import BookTitleForm
 
 
@@ -116,3 +116,20 @@ class SearchedBooksListView(ListView):
     #                 data.append(item)
     #             return JsonResponse({'paged_books':data,"has_previous":has_previous,"has_next":has_next,"previous_page_number":previous_page_number,"next_page_number":next_page_number},safe=False)
     #     return super().render_to_response(context,**response_kwargs)
+
+
+# ?CategoryListView
+class CategoryListView(ListView):
+    model = CategoryBook
+    template_name = "book/categories.html"
+    context_object_name = "categories"
+    paginate_by = 7
+
+
+# ?CategoryBookDetailView
+class CategoryBooksDetailView(DetailView):
+    model = CategoryBook
+    template_name = "book/category_books.html"
+    context_object_name = "category_book_slug"
+    slug_field = "category_book_slug"
+    slug_url_kwarg = "category_book_slug"
